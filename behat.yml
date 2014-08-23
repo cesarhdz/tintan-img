@@ -1,0 +1,6 @@
+default:
+  context:
+    parameters:
+        url:   http://localhost:9001
+        timeout: 1
+        documentRoot: features

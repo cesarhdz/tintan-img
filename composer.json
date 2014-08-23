@@ -4,8 +4,11 @@
     "require": {
         "silex/silex": "~1.2"
     },
-    "require": {
-        "behat/behat": "2.4.*@stable"
+    "require-dev": {
+        "behat/behat": "2.4.*@stable",
+        "guzzle/guzzle": "~3.0",
+        "beberlei/assert": "@stable",
+        "symfony/process": "*"
     },
     "minimum-stability": "dev",
     "config": {

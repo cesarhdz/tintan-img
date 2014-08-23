@@ -5,6 +5,6 @@ Feature: thumbnail
 
 
 	Scenario: 
-		Given I have an image named "tin-tan"
-		When I request for its thumbnail
+		Given I'm using my own server
+		When I request for the image "tintan/150x150"
 		Then I should get an 150 x 150 image
