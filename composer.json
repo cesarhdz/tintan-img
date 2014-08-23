@@ -1,0 +1,21 @@
+{
+    "name": "cesarhdz/tin-tan",
+    "description": "Simple PHP Image Server",
+    "require": {
+        "silex/silex": "~1.2"
+    },
+    "require": {
+        "behat/behat": "2.4.*@stable"
+    },
+    "minimum-stability": "dev",
+    "config": {
+        "bin-dir": "bin/"
+    },
+    "autoload": {"psr-0": {"": "src"}},
+    "authors": [
+        {
+            "name": "cesarhdz",
+            "email": "mrshortcuts@gmail.com"
+        }
+    ]
+}
