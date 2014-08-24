@@ -26,10 +26,10 @@ require_once 'ServerContext.php';
 class FeatureContext extends ServerContext
 {
 
-    private $_response;
-    private $_client;
+    private $response;
+    private $client;
 
-    private $_requestUrl;
+    private $requestUrl;
 
     /**
      * Initializes context.
@@ -39,9 +39,8 @@ class FeatureContext extends ServerContext
      */
     public function __construct(array $parameters)
     {
-        $this->_client  = new Guzzle\Http\Client();
-        $this->_baseUrl = $parameters['url'];
-
+        $this->client  = new GuzzleHttp\Client();
+        $this->baseUrl = $parameters['url'];
     }
 
 
@@ -58,11 +57,10 @@ class FeatureContext extends ServerContext
      */
     public function iRequestForTheImage($uri)
     {
-        $this->_requestUrl  = $this->_baseUrl . '/' . trim($uri, '/');
+        $this->requestUrl  = $this->baseUrl . '/' . trim($uri, '/');
 
-        $this->_response = $this->_client
-            ->get($this->_requestUrl)
-            ->send();
+        $this->response = $this->client
+            ->get($this->requestUrl);
     }
 
     /**
@@ -70,7 +68,15 @@ class FeatureContext extends ServerContext
      */
     public function iShouldGetAnXImage($arg1, $arg2)
     {
-        assert::notNull($this->_response->getContentLength());
-        assert::startsWith($this->_response->getContentType(), 'image/');
+
+        $stream = $this->response->getBody();
+        $stream->read(1024);
+        var_dump($this->response);
+
+        // echo stream_get_meta_data($img);
+        // fclose($img);
+
+        // assert::notNull($this->response->getContentLength());
+        assert::startsWith($this->response->getContentType(), 'image/');
     }
 }

@@ -6,7 +6,7 @@
     },
     "require-dev": {
         "behat/behat": "2.4.*@stable",
-        "guzzle/guzzle": "~3.0",
+        "guzzleHttp/guzzle": "~4.0",
         "beberlei/assert": "@stable",
         "symfony/process": "*"
     },
