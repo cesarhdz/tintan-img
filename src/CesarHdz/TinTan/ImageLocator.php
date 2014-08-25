@@ -20,21 +20,34 @@ class ImageLocator
 
     public function exists($path)
     {
-        $finder = $this->getFinder();
-        $finder->path($path);
+        $files = $this->queryFor($path);
 
-        return count($finder) ? true : false;
+        return count($files) ? true : false;
     }
 
+    public function get($path)
+    {
+        $files = $this->queryFor($path);
 
-    protected function getFinder(){
-    	$finder = new Finder();
-    	$finder->files();
+        foreach ($files as $img) {
+        	return $img;
+        }
+    }
+
+    protected function queryFor($path){
+    	$finder = $this->getFinder();
+    	
+
+    	$finder->files()->path($path);
 
     	foreach ($this->dirs as $dir) {
     		$finder->in($dir);
     	}
 
     	return $finder;
+    }
+
+    protected function getFinder(){
+    	return new Finder();
     }
 }
