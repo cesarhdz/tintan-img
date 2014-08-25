@@ -3,7 +3,8 @@
     "description": "Simple PHP Image Server",
     "require": {
         "silex/silex": "~1.2",
-        "intervention/image": "~2.0"
+        "intervention/image": "~2.0",
+        "mikey179/vfsStream": "~1.3"
     },
     "require-dev": {
         "behat/behat": "2.4.*@stable",
