@@ -18,4 +18,7 @@ class Image
 		return $this->path;
 	}
 
+	public function getPresets(){
+		return $this->presets;
+	}
 }

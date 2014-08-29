@@ -37,7 +37,16 @@ class ImageProcessor
         	}
         }
 
-
         return new Image($uri, $matched);
+    }
+
+    public function process(Image $img, Application $app)
+    {
+        array_map(function($preset) use($app, $img){
+            $filter = $app[$preset->getFilterName()];
+            $filter->filter($img, $preset, $app);
+        }, $img->getPresets());
+
+        return $img;
     }
 }
