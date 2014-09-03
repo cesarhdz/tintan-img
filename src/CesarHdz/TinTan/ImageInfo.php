@@ -2,6 +2,8 @@
 
 namespace CesarHdz\TinTan;
 
+use Intervention\Image\Image;
+
 class ImageInfo extends \SplFileInfo
 {
 
@@ -17,11 +19,19 @@ class ImageInfo extends \SplFileInfo
 		return $this->presets;
 	}
 
-	// public function setImage(Image $image){
-	// 	$this->image = $image;
-	// }
 
-	// public function getImage(){
-	// 	return $this->image();
-	// }
+	public function setImage(Image $image){
+		$this->image = $image;
+	}
+
+
+    public function exists()
+    {
+    	return ($this->image) ? true : false;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
 }
