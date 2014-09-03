@@ -7,12 +7,13 @@ use Prophecy\Argument;
 
 use Intervention\Image\ImageManagerStatic as IMS;
 
-class ImageSpec extends ObjectBehavior
+class ImageInfoSpec extends ObjectBehavior
 {
 
     function it_is_initializable()
     {
 		$this->beConstructedWith('/fake/path', []);
+        $this->shouldHaveType('CesarHdz\TinTan\ImageInfo');
         $this->shouldBeAnInstanceOf('SplFileInfo');
     }
 }

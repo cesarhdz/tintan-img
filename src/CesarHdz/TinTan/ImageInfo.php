@@ -2,7 +2,7 @@
 
 namespace CesarHdz\TinTan;
 
-class Image extends \SplFileInfo
+class ImageInfo extends \SplFileInfo
 {
 
 	protected $presets;

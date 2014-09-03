@@ -26,7 +26,7 @@ class ImageProcessor
     	}
     }
 
-    public function buildImage($uri)
+    public function buildImageInfo($uri)
     {
     	$matched = [];
 
@@ -37,10 +37,10 @@ class ImageProcessor
         	}
         }
 
-        return new Image($uri, $matched);
+        return new ImageInfo($uri, $matched);
     }
 
-    public function process(Image $img, Application $app)
+    public function process(ImageInfo $img, Application $app)
     {
         array_map(function($preset) use($app, $img){
             $filter = $app[$preset->getFilterName()];

@@ -8,7 +8,7 @@ use Prophecy\Argument;
 use CesarHdz\TinTan\ImageFilter;
 use CesarHdz\TinTan\Application;
 use CesarHdz\TinTan\Preset;
-use CesarHdz\TinTan\Image;
+use CesarHdz\TinTan\ImageInfo;
 
 
 
@@ -32,11 +32,11 @@ class ImageProcessorSpec extends ObjectBehavior
     	]);
 
     	// expect
-    	$this->buildImage('img/tintan.thumbnail.jpg')
-    		->shouldHaveType('CesarHdz\TinTan\Image');
+    	$this->buildImageInfo('img/tintan.thumbnail.jpg')
+    		->shouldHaveType('CesarHdz\TinTan\ImageInfo');
 
     	// expect
-    	$this->buildImage('img/tintan.thumbnail.jpg')
+    	$this->buildImageInfo('img/tintan.thumbnail.jpg')
     		->getPathName()
     		->shouldReturn('img/tintan.jpg');
     }
@@ -55,10 +55,10 @@ class ImageProcessorSpec extends ObjectBehavior
     		new Preset('thumbnail',  'sizeFilter', ['width' => 150, 'height' => 150])
     	);
 
-    	$image = new Image('some/path.jpg', $presets);
+    	$image = new ImageInfo('some/path.jpg', $presets);
 
     	// when
-    	$this->process($image, $app)->shouldImplement('CesarHdz\TinTan\Image');
+    	$this->process($image, $app)->shouldImplement('CesarHdz\TinTan\ImageInfo');
 
     	// expect
     	$filter->filter($image, $presets[0], $app)->shouldHaveBeenCalled();
