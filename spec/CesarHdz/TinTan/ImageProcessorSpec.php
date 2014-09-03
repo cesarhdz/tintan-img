@@ -37,7 +37,7 @@ class ImageProcessorSpec extends ObjectBehavior
 
     	// expect
     	$this->buildImage('img/tintan.thumbnail.jpg')
-    		->getPath()
+    		->getPathName()
     		->shouldReturn('img/tintan.jpg');
     }
 

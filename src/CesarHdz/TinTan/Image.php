@@ -2,23 +2,26 @@
 
 namespace CesarHdz\TinTan;
 
-class Image
+class Image extends \SplFileInfo
 {
 
-	protected $path;
 	protected $presets;
+	protected $image;
 
-	public function __construct($path, array $presets){
-		$this->path = $path;
-		$this->presets = $presets;
-	}
-
-
-	public function getPath(){
-		return $this->path;
+	public function __construct($file, array $presets = array()){
+ 		parent::__construct($file);
+ 		$this->presets = $presets;
 	}
 
 	public function getPresets(){
 		return $this->presets;
 	}
+
+	// public function setImage(Image $image){
+	// 	$this->image = $image;
+	// }
+
+	// public function getImage(){
+	// 	return $this->image();
+	// }
 }
