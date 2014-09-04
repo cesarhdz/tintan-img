@@ -11,6 +11,9 @@ use CesarHdz\TinTan\Preset;
 use CesarHdz\TinTan\ImageInfo;
 
 
+use Intervention\Image\ImageManager;
+use Intervention\Image\Image;
+
 
 class ImageProcessorSpec extends ObjectBehavior
 {
@@ -38,7 +41,7 @@ class ImageProcessorSpec extends ObjectBehavior
     	// expect
     	$this->buildImageInfo('img/tintan.thumbnail.jpg')
     		->getPathName()
-    		->shouldReturn('img/tintan.jpg');
+    		->shouldEndWith('img/tintan.jpg');
     }
 
 
@@ -62,5 +65,33 @@ class ImageProcessorSpec extends ObjectBehavior
 
     	// expect
     	$filter->filter($image, $presets[0], $app)->shouldHaveBeenCalled();
+    }
+
+
+    function it_should_add_image_to_file_info_if_the_file_is_an_image(ImageManager $manager, Image $img){
+        // setup
+        $manager->make(Argument::type('string'))
+            ->willReturn($img->getWrappedObject());
+        
+        // and
+        $this->setManager($manager->getWrappedObject());
+
+        // when
+        $this->buildImageInfo('spec/fixtures/tin-tan.jpg')
+            ->getImage()
+
+        // then
+            ->shouldHaveType('Intervention\Image\Image');
+    }
+
+    function getMatchers(){
+
+        return [
+
+            'endWith'=> function($string, $end){
+                return (strpos($string, $end, strlen($string) - strlen($end)) !== false);
+            }
+
+        ];
     }
 }

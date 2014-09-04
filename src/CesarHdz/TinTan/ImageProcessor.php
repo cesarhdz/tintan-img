@@ -2,15 +2,24 @@
 
 namespace CesarHdz\TinTan;
 
+use Intervention\Image\ImageManager;
+
 class ImageProcessor
 {
 
 	protected $presets;
+    protected $manager;
 
 
-	public function __construct(){
+	public function __construct($dir = null){
 		$presets = array();
+
+        $this->setDir($dir ?: getcwd());
 	}
+
+    public function setDir($dir){
+        $this->dir = rtrim($dir, '/') . '/';
+    }
 
     public function setPresets(array $presets)
     {
@@ -30,19 +39,22 @@ class ImageProcessor
     {
     	$matched = [];
 
-        foreach ($this->presets as $preset){
-        	if($preset->match($uri)){
-        		$uri = $preset->removeFrom($uri);
-        		$matched[] = $preset;
-        	}
+        if($this->hasPresets()){
+            foreach ($this->presets as $preset){
+            	if($preset->match($uri)){
+            		$uri = $preset->removeFrom($uri);
+            		$matched[] = $preset;
+            	}
+            }
         }
 
-        $file = new ImageInfo($uri, $matched);
+
+        $file = new ImageInfo($this->dir . $uri, $matched);
 
         // If we have a proper imagen, then it is added to Image Info
         if($file->isImage()){
             $path = $file->getRealPath();
-            $file->setImage($this->imageManager->make($path));
+            $file->setImage($this->manager->make($path));
         }
 
         return $file;
@@ -56,5 +68,14 @@ class ImageProcessor
         }, $img->getPresets());
 
         return $img;
+    }
+
+    public function hasPresets(){
+        return is_array($this->presets) && count($this->presets);
+    }
+
+    public function setManager(ImageManager $manager)
+    {
+        $this->manager = $manager;
     }
 }
