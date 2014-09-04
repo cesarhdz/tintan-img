@@ -31,7 +31,32 @@ class ImageInfoSpec extends ObjectBehavior
     	// then
     	$this->getImage()->shouldHaveType('Intervention\Image\Image');
     	$this->exists()->shouldReturn(true);
+    }
+
+    function it_should_read_mime_and_tell_if_a_file_is_an_image(){
+    	$this->beConstructedWith($this->_fixture_path('tin-tan.jpg'));
+
+    	$this->getRealPath()->shouldBeString();
+    	$this->shouldBeImage();
+    }
+
+    function it_should_not_consider_inexistent_files_as_image(){
+
+    	$this->beConstructedWith($this->_fixture_path('no-tan.jpg'));
+
+    	$this->getRealPath()->shouldReturn(false);
+    	$this->shouldNotBeImage();
+    }
+
+    function it_should_not_consider_other_mimes_as_image(){
+    	$this->beConstructedWith(__FILE__);
+
+    	$this->getRealPath()->shouldBeString();
+    	$this->shouldNotBeImage();
+    }
 
 
+    function _fixture_path($file){
+		return dirname(__FILE__) . '/../../fixtures/' . $file;
     }
 }

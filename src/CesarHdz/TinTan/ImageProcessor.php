@@ -37,7 +37,15 @@ class ImageProcessor
         	}
         }
 
-        return new ImageInfo($uri, $matched);
+        $file = new ImageInfo($uri, $matched);
+
+        // If we have a proper imagen, then it is added to Image Info
+        if($file->isImage()){
+            $path = $file->getRealPath();
+            $file->setImage($this->imageManager->make($path));
+        }
+
+        return $file;
     }
 
     public function process(ImageInfo $img, Application $app)

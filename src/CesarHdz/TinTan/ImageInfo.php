@@ -34,4 +34,20 @@ class ImageInfo extends \SplFileInfo
     {
         return $this->image;
     }
+
+    public function isImage()
+    {
+    	// No file, no image
+    	if(! $this->getRealPath()){
+    		return false;
+    	}
+
+		$finfo = finfo_open(FILEINFO_MIME_TYPE);
+		$mime =  finfo_file($finfo, $this->getRealPath());
+
+		finfo_close($finfo);
+
+		// We only check that mime starts with 'image' prefix
+		return (explode('/', $mime)[0] == 'image') ? true : false;
+    }
 }
