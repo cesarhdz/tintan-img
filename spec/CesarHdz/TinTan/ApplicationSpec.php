@@ -32,6 +32,20 @@ class ApplicationSpec extends ObjectBehavior
 
     }
 
+    function it_should_register_image_manager_as_service_after_bootstrap(){
+        // setup
+        $this->beConstructedWith([
+            'dir' => './',
+            'presets' => []
+        ]);
+
+        //when
+        $this->bootstrap();
+
+        // then
+        $this['imageProcessor']->shouldHaveType('CesarHdz\TinTan\imageProcessor');
+    }
+
 
     function _mock_fs($base, array $tree){
         $stream = vfsStream::setup($base);
