@@ -14,10 +14,16 @@ class Application extends Silex
 		parent::__construct($config);
 	}
 
-    protected function dir($dir)
+    public function dir($dir)
     {
     	$dir = $dir ?: getcwd();
         $this['dir'] = rtrim($dir, '/') . '/';
+
+        return $this;
+    }
+
+    public function version($version){
+        $this['version'] = $version;
 
         return $this;
     }
