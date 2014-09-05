@@ -3,7 +3,6 @@
 namespace CesarHdz\TinTan;
 
 use Silex\Application as Silex;
-use Symfony\Component\Yaml\Yaml;
 
 class Application extends Silex
 {
@@ -11,39 +10,20 @@ class Application extends Silex
 	const NAME = 'tintan';
 	const VERSION = '0.1';
 
-	protected $dir;
-
-
-	public function __construct($dir = null, $configFile = null){
-		parent::__construct();
-
-		$this->setDir($dir);
-		$this->setConfigFile($configFile);
+	public function __construct(array $config = array()){
+		parent::__construct($config);
 	}
 
-    protected function setDir($dir)
+    protected function dir($dir)
     {
     	$dir = $dir ?: getcwd();
         $this['dir'] = rtrim($dir, '/') . '/';
-    }
 
-    protected function setConfigFile($file){
-    	$this['config.file'] = $file ?: self::NAME . '.yml';
+        return $this;
     }
 
     public function bootstrap()
     {
-        $this->readConfig();
-    }
 
-
-    protected function readConfig(){
-    	$file = $this['dir'] . $this['config.file'];
-
-    	$config = Yaml::parse($file);
-
-    	foreach ($config as $key => $value) {
-    		$this[$key] = $value;
-    	}
     }
 }
