@@ -34,9 +34,8 @@ class ApplicationSpec extends ObjectBehavior
 
     function it_should_register_image_manager_as_service_after_bootstrap(){
         // setup
-        $this->beConstructedWith([
-            'dir' => './',
-        ]);
+        $this->dir('./');
+        $this->version('1.0');
 
         //when
         $this->bootstrap();
@@ -55,6 +54,23 @@ class ApplicationSpec extends ObjectBehavior
         $this['presets'][0]->getName()->shouldReturn('thumbnail-mini');
 
     }
+
+    function it_should_have_a_dir_and_version_in_order_to_be_bootstrapped(){
+        
+        // expect
+        $this->shouldThrow('CesarHdz\TinTan\Exceptions\ConfigException')
+            ->duringBootstrap();
+
+        // when
+        $this->version('1.0');
+        $this->dir('/some/dir');
+
+
+        // then
+        $this->bootstrap()->shouldHaveType('CesarHdz\TinTan\Application');
+
+    }
+
 
     function _mock_fs($base, array $tree){
         $stream = vfsStream::setup($base);

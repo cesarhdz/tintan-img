@@ -35,6 +35,8 @@ class Application extends Silex
 
     public function bootstrap()
     {
+        $this->validateConfig();
+
         $this['imageManager'] = $this->share(function($app){
 
             $key = 'imageManager.adapter';
@@ -56,6 +58,26 @@ class Application extends Silex
 
             return $processor;
         });
+
+
+        return $this;
+    }
+
+
+    protected function validateConfig(){
+
+        $required = ['version', 'dir'];
+
+        array_map(function($field){
+            if(! isset($this->values[$field])){
+                throw new Exceptions\ConfigException('version', 
+                    "It's required but it have not been defined, you can set using \$app['${field}'] = <value>"
+                );
+            }
+        }, $required);
+
+
+
     }
 
     public function preset($preset, $filter, array $args = array())
