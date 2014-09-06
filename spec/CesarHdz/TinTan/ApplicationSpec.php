@@ -36,16 +36,25 @@ class ApplicationSpec extends ObjectBehavior
         // setup
         $this->beConstructedWith([
             'dir' => './',
-            'presets' => []
         ]);
 
         //when
         $this->bootstrap();
 
         // then
-        $this['imageProcessor']->shouldHaveType('CesarHdz\TinTan\imageProcessor');
+        $this['imageProcessor']->shouldHaveType('CesarHdz\TinTan\ImageProcessor');
     }
 
+
+    function it_should_register_presets_with_apply_method(){
+
+        $this->preset('thumbnail-mini', 'SizeFilter', ['width' => 150]);
+
+
+        $this['presets'][0]->shouldHaveType('CesarHdz\TinTan\Preset');
+        $this['presets'][0]->getName()->shouldReturn('thumbnail-mini');
+
+    }
 
     function _mock_fs($base, array $tree){
         $stream = vfsStream::setup($base);

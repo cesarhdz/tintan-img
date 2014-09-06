@@ -36,4 +36,9 @@ class Preset
 
         return str_replace($search, '', $uri);
     }
+
+    public function getName()
+    {
+        return $this->name;
+    }
 }

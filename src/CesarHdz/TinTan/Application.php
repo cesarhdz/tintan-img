@@ -11,6 +11,14 @@ class Application extends Silex
 	const NAME = 'tintan';
 	const VERSION = '0.1';
 
+
+    public function __construct(array $config = array()){
+        parent::__construct($config);
+
+        // All presets must be included using $this->preset() method
+        $this['presets'] = array();
+    }
+
     public function dir($dir)
     {
     	$dir = $dir ?: getcwd();
@@ -48,5 +56,13 @@ class Application extends Silex
 
             return $processor;
         });
+    }
+
+    public function preset($preset, $filter, array $args = array())
+    {
+        $this['presets'] = array_merge(
+            $this['presets'], 
+            [new Preset($preset, $filter, $args)]
+        );
     }
 }
