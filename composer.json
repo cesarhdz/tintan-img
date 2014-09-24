@@ -7,7 +7,7 @@
     },
     "require-dev": {
         "mikey179/vfsStream": "~1.3",
-        "behat/behat": "2.4.*@stable",
+        "behat/behat": "~3.0",
         "guzzleHttp/guzzle": "~4.0",
         "beberlei/assert": "@stable",
         "symfony/process": "*",

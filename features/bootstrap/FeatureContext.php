@@ -1,82 +1,23 @@
 <?php
 
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
-
-use Assert\Assertion as assert;
-
-
-require_once 'ServerContext.php';
-
-
-//
-// Require 3rd-party libraries here:
-//
-//   require_once 'PHPUnit/Autoload.php';
-//   require_once 'PHPUnit/Framework/Assert/Functions.php';
-//
+use Behat\Behat\Context\Context;
+use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
 
 /**
- * Features context.
+ * Defines application features from the specific context.
  */
-class FeatureContext extends ServerContext
+class FeatureContext implements Context, SnippetAcceptingContext
 {
-
-    private $response;
-    private $client;
-
-    private $requestUrl;
-
     /**
      * Initializes context.
-     * Every scenario gets it's own context object.
      *
-     * @param array $parameters context parameters (set them up through behat.yml)
+     * Every scenario gets its own context instance.
+     * You can also pass arbitrary arguments to the
+     * context constructor through behat.yml.
      */
-    public function __construct(array $parameters)
+    public function __construct()
     {
-        $this->client  = new GuzzleHttp\Client();
-        $this->baseUrl = $parameters['url'];
-    }
-
-
-    /**
-     * @Given /^I\'m using my own server$/
-     */
-    public function iMUsingMyOwnServer()
-    {
-        // Check app has started
-    }
-
-    /**
-     * @When /^I request for the image "([^"]*)"$/
-     */
-    public function iRequestForTheImage($uri)
-    {
-        $this->requestUrl  = $this->baseUrl . '/' . trim($uri, '/');
-
-        $this->response = $this->client
-            ->get($this->requestUrl);
-    }
-
-    /**
-     * @Then /^I should get an (\d+) x (\d+) image$/
-     */
-    public function iShouldGetAnXImage($arg1, $arg2)
-    {
-
-        $stream = $this->response->getBody();
-        $stream->read(1024);
-        var_dump($this->response);
-
-        // echo stream_get_meta_data($img);
-        // fclose($img);
-
-        // assert::notNull($this->response->getContentLength());
-        assert::startsWith($this->response->getContentType(), 'image/');
     }
 }
