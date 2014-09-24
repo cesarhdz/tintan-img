@@ -1,6 +1,5 @@
-# default:
-#   context:
-#     parameters:
-#         url:   http://localhost:9001
-#         timeout: 1
-#         documentRoot: features
+default:
+  suites:
+    integration:
+        paths:    [ %paths.base%/features/integration ]
+        contexts: [ IntegrationContext ]

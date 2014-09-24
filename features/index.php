@@ -8,18 +8,20 @@ require '../../vendor/autoload.php';
 use CesarHdz\TinTan\Application;
 
 
-$app = new Application('/my/path', [
+$app = new Application([
 	'image.library' => 'imagik'
 ]);
 
+$app->version('1.0')->dir('/some/dir');
 
-$app->use('thumbnail-mini', 'SizeFilter', [
+
+$app->preset('thumbnail-mini', 'SizeFilter', [
 		'width' => 150
-	]);
+	])
 
 	// ->use('{i:width}', 'SizeFilter')
 
-	// ->use('{i:width}x{i:height}', 'SizeFilter');
+	->use('{i:width}x{i:height}', 'SizeFilter');
 
 
 
