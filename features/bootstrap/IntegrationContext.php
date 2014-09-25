@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 use org\bovigo\vfs\vfsStream;
 
+use Assert\Assertion as assert;
+
 /**
  * Defines application features from the specific context.
  */
@@ -19,6 +21,8 @@ class IntegrationContext implements Context, SnippetAcceptingContext
 {
 
     private $app;
+    private $request;
+    private $response;
 
     /**
      * Initializes context.
@@ -28,7 +32,11 @@ class IntegrationContext implements Context, SnippetAcceptingContext
      * context constructor through behat.yml.
      */
     public function __construct()
-    {}
+    {
+        $this->app = new Application();
+        $this->app->dir(vfsStream::url(''));
+        $this->app->version('@test');
+    }
 
     /**
      * @Given I have the dir :dir with these files
@@ -39,57 +47,26 @@ class IntegrationContext implements Context, SnippetAcceptingContext
 
         foreach ($tree as $file) {
             vfsStream::newFile($file['file'])->at($root);
-
             // assert file_exists(vfsStream::url($dir) . '/' . $file['file']))
         }
     }
 
     /**
-     * @When I request for tin-tan\/pachuco.png
+     * @When I request for :image image
      */
-    public function iRequestForTinTanPachucoPng()
+    public function iRequestForImage($image)
     {
-        throw new PendingException();
+        $this->app->bootstrap();
+        $this->request = Request::create($image, 'GET');
+        $this->response = $this->app->handle($this->request);
     }
 
     /**
-     * @When I request for tin-tan\/pachuco.jpg
+     * @Then I should get :status status
      */
-    public function iRequestForTinTanPachucoJpg()
+    public function iShouldGetStatus($status)
     {
-        throw new PendingException();
-    }
-
-    /**
-     * @When I request for tin-tan\/pachuco.gif
-     */
-    public function iRequestForTinTanPachucoGif()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @When I request for tin-tan\/pachuco.txt
-     */
-    public function iRequestForTinTanPachucoTxt()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @When I request for pachuco.jpg
-     */
-    public function iRequestForPachucoJpg2()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then I should get :arg1 status
-     */
-    public function iShouldGetStatus($arg1)
-    {
-        throw new PendingException();
+        assert::eq($this->response->getStatusCode(), intval($status));
     }
 
 

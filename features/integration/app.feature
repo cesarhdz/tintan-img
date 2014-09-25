@@ -12,13 +12,13 @@ Feature: App server
       | pachuco.gif   |
   		| pachuco.txt 	|
 
-    When I request for <image>
+    When I request for <image> image
     Then I should get <status> status
 
     Examples:
-    	| image 		              | status |
-      | tin-tan/pachuco.png     | 200    |
-      | tin-tan/pachuco.jpg     | 200    |
-      | tin-tan/pachuco.gif     | 200    |
-    	| tin-tan/pachuco.txt     | 404 	 |
-      | pachuco.jpg             | 404    |
+    	| image 		                | status |
+      | 'tin-tan/pachuco.png'     | 200    |
+      | 'tin-tan/pachuco.jpg'     | 200    |
+      | 'tin-tan/pachuco.gif'     | 200    |
+    	| 'tin-tan/pachuco.txt'     | 404 	 |
+      | 'pachuco.jpg'             | 404    |
