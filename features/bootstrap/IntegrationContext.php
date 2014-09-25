@@ -31,11 +31,17 @@ class IntegrationContext implements Context, SnippetAcceptingContext
     {}
 
     /**
-     * @Given I have the dir :arg1 with these files
+     * @Given I have the dir :dir with these files
      */
-    public function iHaveTheDirWithTheseFiles($arg1, TableNode $table)
+    public function iHaveTheDirWithTheseFiles($dir, TableNode $tree)
     {
-        throw new PendingException();
+        $root = vfsStream::setup($dir);
+
+        foreach ($tree as $file) {
+            vfsStream::newFile($file['file'])->at($root);
+
+            // assert file_exists(vfsStream::url($dir) . '/' . $file['file']))
+        }
     }
 
     /**
