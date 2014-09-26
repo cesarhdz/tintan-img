@@ -18,11 +18,11 @@ Feature: Http responses
 
     Examples:
       | image             | status |
-      | 'tin-tan/hat.png' | 200    |
-      | 'tin-tan/hat.jpg' | 200    |
-      | 'tin-tan/hat.gif' | 200    |
-      | 'tin-tan/hat.txt' | 404    |
-      | 'hat.jpg'         | 404    |
+      | '/tin-tan/hat.png' | 200    |
+      | '/tin-tan/hat.jpg' | 200    |
+      | '/tin-tan/hat.gif' | 200    |
+      | '/tin-tan/hat.txt' | 404    |
+      | '/hat.jpg'         | 404    |
 
 
   Scenario Outline: ContentTypes for images
@@ -30,7 +30,7 @@ Feature: Http responses
     Then I should get <type> content type header
 
     Examples:
-      | image             | status      |
-      | 'tin-tan/hat.png' | 'image/png' |
-      | 'tin-tan/hat.jpg' | 'image/jpg' |
-      | 'tin-tan/hat.gif' | 'image/gif' |
+      | image              | status      |
+      | '/tin-tan/hat.png' | 'image/png' |
+      | '/tin-tan/hat.jpg' | 'image/jpg' |
+      | '/tin-tan/hat.gif' | 'image/gif' |

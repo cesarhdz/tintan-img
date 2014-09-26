@@ -54,9 +54,15 @@ class IntegrationContext implements Context, SnippetAcceptingContext
     /**
      * @When I request :uri uri
      */
-    public function iRequestTinTanHatPngUri($uri)
+    public function iRequestAnUri($uri)
     {
         $this->app->bootstrap();
+
+        // Errors will break tests
+        $this->app->error(function (\Exception $e, $code) {
+            if($code == 500) throw $e;
+        });
+
         $this->request = Request::create($uri, 'GET');
         $this->response = $this->app->handle($this->request);
     }
