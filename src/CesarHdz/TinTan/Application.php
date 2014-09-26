@@ -14,9 +14,7 @@ class Application extends Silex
 
     public function __construct(array $config = array()){
         parent::__construct($config);
-
-        // All presets must be included using $this->preset() method
-        $this['presets'] = array();
+        $this->setDefaultConfig();
     }
 
     public function dir($dir)
@@ -33,12 +31,23 @@ class Application extends Silex
         return $this;
     }
 
+
+    protected function setDefaultConfig(){
+        // All presets must be included using $this->preset() method
+        $this['presets'] = array();
+
+        // IMage controller will handle all requests
+        $this['imageController'] = function($app){
+            return new ImageController();
+        };
+    }
+
     public function bootstrap()
     {
+
         $this->validateConfig();
-
+        
         $this['imageManager'] = $this->share(function($app){
-
             $key = 'imageManager.adapter';
             $config = array();
 
@@ -49,7 +58,6 @@ class Application extends Silex
             return new ImageManager($config);
         });
 
-
         // Set Image Manager
         $this['imageProcessor'] = $this->share(function($app){
             $processor = new ImageProcessor($app['dir']);
@@ -59,13 +67,13 @@ class Application extends Silex
             return $processor;
         });
 
+        $this->mount('/', $this['imageController']);
 
         return $this;
     }
 
 
     protected function validateConfig(){
-
         $required = ['version', 'dir'];
 
         array_map(function($field){
@@ -75,9 +83,6 @@ class Application extends Silex
                 );
             }
         }, $required);
-
-
-
     }
 
     public function preset($preset, $filter, array $args = array())

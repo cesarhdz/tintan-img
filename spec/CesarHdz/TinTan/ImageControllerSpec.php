@@ -7,6 +7,9 @@ use Prophecy\Argument;
 
 use CesarHdz\TinTan\Application;
 
+use Silex\ControllerCollection;
+use Silex\Route;
+
 
 class ImageControllerSpec extends ObjectBehavior
 {
@@ -18,12 +21,14 @@ class ImageControllerSpec extends ObjectBehavior
     }
 
 
-    function it_should_register_a_global_route_for_all_images(Application $app){
-    	// when:
-    	$this->connect($app->getWrappedObject());
+    function it_should_register_a_global_route_for_all_images(Application $app, Route $route){
 
-    	// then:
-    	$app->get(Argument::exact('/{image}'), Argument::any())->shouldHaveBeenCalled();
+        $app
+            ->offsetGet('controllers_factory')
+            ->willReturn(new ControllerCollection($route->getWrappedObject()));
+
+    	// when:
+    	$this->connect($app->getWrappedObject())->shouldHaveType('Silex\ControllerCollection');
     }
 
 
