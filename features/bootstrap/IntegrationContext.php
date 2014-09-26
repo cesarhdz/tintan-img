@@ -52,23 +52,30 @@ class IntegrationContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @When I request for :image image
+     * @When I request :uri uri
      */
-    public function iRequestForImage($image)
+    public function iRequestTinTanHatPngUri($uri)
     {
         $this->app->bootstrap();
-        $this->request = Request::create($image, 'GET');
+        $this->request = Request::create($uri, 'GET');
         $this->response = $this->app->handle($this->request);
     }
 
     /**
-     * @Then I should get :status status
+     * @Then I should get :status code
      */
-    public function iShouldGetStatus($status)
+    public function iShouldGetCode($status)
     {
         assert::eq($this->response->getStatusCode(), intval($status));
     }
 
+    
+    /**
+     * @Then I should get <type> content type header
+     */
+    public function iShouldGetTypeContentTypeHeader()
+    {
+        throw new PendingException();
+    }
 
-  
 }
