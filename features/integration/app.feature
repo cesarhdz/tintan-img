@@ -34,3 +34,14 @@ Feature: Http responses
       | '/img/tin-tan.png' | 'image/png' |
       | '/img/tin-tan.jpg' | 'image/jpg' |
       | '/img/tin-tan.gif' | 'image/gif' |
+
+
+  Scenario Outline: Image Content 
+    When I request <image> uri
+    Then I should get an image
+
+    Examples:
+      | image              |
+      | '/img/tin-tan.png' |
+      | '/img/tin-tan.jpg' |
+      | '/img/tin-tan.gif' |

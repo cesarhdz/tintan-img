@@ -11,8 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 class ImageController implements ControllerProviderInterface
 {
 
-
-
 	public function connect(SilexApp $app){
         // creates a new controller based on the default route
         $controllers = $app['controllers_factory'];
@@ -26,8 +24,11 @@ class ImageController implements ControllerProviderInterface
 			}
 
 			// Adding response
-			$response = new Response($image->getImage()->getEncoded());
-			$response->headers->set('Content-Type', "image/{$image->getExtension()}");
+			$format = $image->getExtension();
+			$data = $image->getImage()->encode($format);
+
+			$response = new Response($data->getEncoded());
+			$response->headers->set('Content-Type', "image/{$format}");
 
 			return $response;
 		})

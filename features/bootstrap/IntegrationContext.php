@@ -92,4 +92,14 @@ class IntegrationContext implements Context, SnippetAcceptingContext
         return $this->dir . '/' . $this->imgFolder . '/' . $file;
     }
 
+
+    /**
+     * @Then I should get an image
+     */
+    public function iShouldGetAnImage()
+    {
+        // see http://php.net/manual/en/function.imagecreatefromstring.php/
+        $data = $this->response->getContent();
+        assert::true(imagecreatefromstring($data) != false);
+    }
 }
