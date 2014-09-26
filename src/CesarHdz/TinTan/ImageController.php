@@ -24,7 +24,8 @@ class ImageController implements ControllerProviderInterface
 				$app->abort(404, "Image ${uri} doen't exists");
 			}
 
-			var_dump($imageInfo);
+
+			return $image->getImage()->response();
 		})
 
 		->assert('uri', '[\w\-\._/]+');
