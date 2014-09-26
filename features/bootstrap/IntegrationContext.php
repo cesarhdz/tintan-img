@@ -10,8 +10,6 @@ use Behat\Gherkin\Node\TableNode;
 use CesarHdz\TinTan\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-use org\bovigo\vfs\vfsStream;
-
 use Assert\Assertion as assert;
 
 /**
@@ -24,6 +22,7 @@ class IntegrationContext implements Context, SnippetAcceptingContext
     private $request;
     private $response;
 
+
     /**
      * Initializes context.
      *
@@ -34,20 +33,24 @@ class IntegrationContext implements Context, SnippetAcceptingContext
     public function __construct()
     {
         $this->app = new Application();
-        $this->app->dir(vfsStream::url(''));
+
+        $this->dir = dirname(dirname(__FILE__ ));
+        $this->imgFolder = 'img';
+
+        $this->app->dir($this->dir);
         $this->app->version('@test');
     }
 
     /**
-     * @Given I have the dir :dir with these files
+     * @Given I have these files
+     *
+     * We make sure file exists before running tests
      */
-    public function iHaveTheDirWithTheseFiles($dir, TableNode $tree)
+    public function iHaveTheseFiles(TableNode $files)
     {
-        $root = vfsStream::setup($dir);
-
-        foreach ($tree as $file) {
-            vfsStream::newFile($file['file'])->at($root);
-            // assert file_exists(vfsStream::url($dir) . '/' . $file['file']))
+        foreach ($files as $file) {
+            $path = $this->getImagePath($file['file']);
+            assert::file($path);
         }
     }
 
@@ -82,6 +85,12 @@ class IntegrationContext implements Context, SnippetAcceptingContext
     public function iShouldGetTypeContentTypeHeader()
     {
         throw new PendingException();
+    }
+
+
+
+    private function getImagePath($file){
+        return $this->dir . '/' . $this->imgFolder . '/' . $file;
     }
 
 }
