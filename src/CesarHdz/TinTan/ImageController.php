@@ -6,6 +6,7 @@ use Silex\Application as SilexApp;
 use Silex\ControllerProviderInterface;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ImageController implements ControllerProviderInterface
 {
@@ -24,8 +25,11 @@ class ImageController implements ControllerProviderInterface
 				$app->abort(404, "Image ${uri} doen't exists");
 			}
 
+			// Adding response
+			$response = new Response($image->getImage()->getEncoded());
+			$response->headers->set('Content-Type', "image/{$image->getExtension()}");
 
-			return $image->getImage()->response();
+			return $response;
 		})
 
 		->assert('uri', '[\w\-\._/]+');

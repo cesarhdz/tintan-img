@@ -80,13 +80,12 @@ class IntegrationContext implements Context, SnippetAcceptingContext
 
     
     /**
-     * @Then I should get <type> content type header
+     * @Then I should get :type content type header
      */
-    public function iShouldGetTypeContentTypeHeader()
+    public function iShouldGetTypeContentTypeHeader($type)
     {
-        throw new PendingException();
+        assert::eq($this->response->headers->get('content-type'), $type);
     }
-
 
 
     private function getImagePath($file){

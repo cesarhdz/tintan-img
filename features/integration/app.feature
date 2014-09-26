@@ -30,7 +30,7 @@ Feature: Http responses
     Then I should get <type> content type header
 
     Examples:
-      | image              | status      |
+      | image              | type        |
       | '/img/tin-tan.png' | 'image/png' |
       | '/img/tin-tan.jpg' | 'image/jpg' |
       | '/img/tin-tan.gif' | 'image/gif' |
