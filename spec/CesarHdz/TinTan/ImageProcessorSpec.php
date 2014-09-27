@@ -74,7 +74,7 @@ class ImageProcessorSpec extends ObjectBehavior
             ->willReturn($img->getWrappedObject());
         
         // and
-        $this->setManager($manager->getWrappedObject());
+        $this->beConstructedWith($manager->getWrappedObject());
 
         // when
         $this->buildImageInfo('spec/fixtures/tin-tan.jpg')

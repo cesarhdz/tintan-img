@@ -37,27 +37,12 @@ class Application extends Silex
         // All presets must be included using $this->preset() method
         $this['presets'] = array();
 
-        // IMage controller will handle all requests
+        // Image controller will handle all requests
         $this['imageController'] = function($app){
             return new ImageController();
         };
 
-        // Add default filters
-        $this['sizeImageFilter'] = function(){ 
-            return new Filters\SizeFilter();
-        };
-    }
-
-
-    public function getFilter($name){
-        return  $this[$name . self::FILTER_SUFFIX];
-    }
-
-    public function bootstrap()
-    {
-
-        $this->validateConfig();
-        
+        // Manaer 
         $this['imageManager'] = $this->share(function($app){
             $key = 'imageManager.adapter';
             $config = array();
@@ -69,14 +54,28 @@ class Application extends Silex
             return new ImageManager($config);
         });
 
-        // Set Image Manager
+        // ImageProcessor
         $this['imageProcessor'] = $this->share(function($app){
-            $processor = new ImageProcessor($app['dir']);
-            $processor->setPresets($app['presets']);
-            $processor->setManager($app['imageManager']);
+            $processor = new ImageProcessor($app['imageManager'], $app['dir']);
 
             return $processor;
         });
+
+        // Add default filters
+        $this['sizeImageFilter'] = $this->share(function(){ 
+            return new Filters\SizeFilter();
+        });
+    }
+
+
+    public function getFilter($name){
+        return  $this[$name . self::FILTER_SUFFIX];
+    }
+
+    public function bootstrap()
+    {
+
+        // $this->validateConfig();
 
         $this->mount('/', $this['imageController']);
 
@@ -98,9 +97,19 @@ class Application extends Silex
 
     public function preset($preset, $filter, array $args = array())
     {
-        $this['presets'] = array_merge(
-            $this['presets'], 
-            [new Preset($preset, $filter, $args)]
-        );
+        if(! $this->filterExists($filter)){
+            throw new Exceptions\ConfigException('Preset ' . $preset,
+                "[${filter}] ImageFilter is not available"
+            );
+        }
+
+        $this['imageProcessor']->addPreset($preset, $this->getFilter($filter), $args);
+
+        return $this;
+    }
+
+    public function filterExists($name)
+    {
+        return $this->offsetExists($name . self::FILTER_SUFFIX);
     }
 }

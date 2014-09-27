@@ -11,7 +11,7 @@ Feature: Image Filters
       | tin-tan.gif |
       | tin-tan.txt |
 
-    And I register a "thumbnail" preset using "Size" filter, options
+    And I register a "thumbnail" preset using "size" filter, options
       | key    | val |
       | width  | 250 |
       | height | 250 |
@@ -23,7 +23,7 @@ Feature: Image Filters
     Examples:
       | image                         | width | height |
       | '/img/tin-tan.thumbnail.jpg'  | 250   | 200    |
-      | '/img/tin-tan.jpg'            | 936   | 936    |
+      | '/img/tin-tan.jpg'            | 888   | 1200   |
   
   @Pending
   Scenario: Wildcard Pattern

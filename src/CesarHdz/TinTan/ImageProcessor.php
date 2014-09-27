@@ -8,30 +8,29 @@ class ImageProcessor
 {
 
 	protected $presets;
-    protected $manager;
+    private $manager;
 
 
-	public function __construct($dir = null){
+	public function __construct(ImageManager $manager = null, $dir = null){
 		$presets = array();
 
         $this->setDir($dir ?: getcwd());
+        $this->manager = $manager ?: new ImageManager();
 	}
 
     public function setDir($dir){
         $this->dir = rtrim($dir, '/') . '/';
     }
 
+    public function addPreset($name, ImageFilter $filter, array $config){
+		$this->presets[] = new Preset($name, $filter, $config);
+    }
+
+    //@deprecated
     public function setPresets(array $presets)
     {
-    	foreach ($presets as $name => $params) {
-
-    		if(!array_key_exists('filter', $params))
-    			throw new \Exception('Preset requires a filter name to bevalid');
-
-
-			$args = array_key_exists('args', $params) ? $params['args'] : [];
-
-			$this->presets[] = new Preset($name, $params['filter'], $args);
+        foreach ($presets as $name => $params) {
+            // $this->addPreset($name, $params['filter'], $params);
     	}
     }
 
@@ -47,7 +46,6 @@ class ImageProcessor
             	}
             }
         }
-
 
         $file = new ImageInfo($this->dir . $uri, $matched);
 
@@ -72,10 +70,5 @@ class ImageProcessor
 
     public function hasPresets(){
         return is_array($this->presets) && count($this->presets);
-    }
-
-    public function setManager(ImageManager $manager)
-    {
-        $this->manager = $manager;
     }
 }

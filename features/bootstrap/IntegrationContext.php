@@ -134,15 +134,12 @@ class IntegrationContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Then I should get an image of :widht x :height px
+     * @Then I should get an image of :width x :height px
      */
-    public function i_should_get_an_image_of_x_px($arg1, $arg2)
+    public function i_should_get_an_image_of_x_px($width, $height)
     {
-        $size = getimagesize($this->getImageFromResponse());
-
-        var_dump($size);
-
-        throw new PendingException();
+        assert::eq(imagesx($this->getImageFromResponse()), $width);
+        assert::eq(imagesy($this->getImageFromResponse()), $height);
     }
 
 }

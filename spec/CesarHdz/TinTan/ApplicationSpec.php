@@ -6,6 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use org\bovigo\vfs\vfsStream;
 
+use CesarHdz\TinTan\ImageProcessor;
+
 class ApplicationSpec extends ObjectBehavior
 {
     function it_is_initializable()
@@ -45,35 +47,45 @@ class ApplicationSpec extends ObjectBehavior
     }
 
 
-    function it_should_register_presets_with_apply_method(){
+    function it_should_register_presets_with_apply_method(ImageProcessor $processor){
+        // setup
+        $this->filterExists('size')->shouldBe(true);
+        $this['imageProcessor'] = function($app) use($processor){
+            return $processor->getWrappedObject();
+        };
 
-        $this->preset('thumbnail-mini', 'SizeFilter', ['width' => 150]);
+        // When
+        $this->preset('thumbnail', 'size', ['width' => 150]);
 
-
-        $this['presets'][0]->shouldHaveType('CesarHdz\TinTan\Preset');
-        $this['presets'][0]->getName()->shouldReturn('thumbnail-mini');
-
-    }
-
-    function it_should_have_a_dir_and_version_in_order_to_be_bootstrapped(){
+        // Then
+        $processor->addPreset(
+            'thumbnail', 
+            Argument::type('CesarHdz\TinTan\Filters\SizeFilter'), 
+            ['width' => 150]
+        )->shouldHaveBeenCalled();
         
-        // expect
-        $this->shouldThrow('CesarHdz\TinTan\Exceptions\ConfigException')
-            ->duringBootstrap();
-
-        // when
-        $this->version('1.0');
-        $this->dir('/some/dir');
-
-
-        // then
-        $this->bootstrap()->shouldHaveType('CesarHdz\TinTan\Application');
-
     }
+
+    // function it_should_have_a_dir_and_version_in_order_to_be_bootstrapped(){
+        
+    //     // expect
+    //     $this->shouldThrow('CesarHdz\TinTan\Exceptions\ConfigException')
+    //         ->duringBootstrap();
+
+    //     // when
+    //     $this->version('1.0');
+    //     $this->dir('/some/dir');
+
+
+    //     // then
+    //     $this->bootstrap()->shouldHaveType('CesarHdz\TinTan\Application');
+
+    // }
 
 
     function it_should_have_default_filters_after_contructed(){
         // expect
+        $this->filterExists('size')->shouldBe(true);
         $this->getFilter('size')->shouldHaveType('CesarHdz\TinTan\ImageFilter');
     }
 
