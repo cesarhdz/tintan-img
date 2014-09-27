@@ -47,7 +47,7 @@ class ApplicationSpec extends ObjectBehavior
     }
 
 
-    function it_should_register_presets_with_apply_method(ImageProcessor $processor){
+    function it_should_register_presets(ImageProcessor $processor){
         // setup
         $this->filterExists('size')->shouldBe(true);
         $this['imageProcessor'] = function($app) use($processor){
@@ -66,21 +66,17 @@ class ApplicationSpec extends ObjectBehavior
         
     }
 
-    // function it_should_have_a_dir_and_version_in_order_to_be_bootstrapped(){
-        
-    //     // expect
-    //     $this->shouldThrow('CesarHdz\TinTan\Exceptions\ConfigException')
-    //         ->duringBootstrap();
+    function it_should_have_a_dir_to_bootstrap(){
+        // expect
+        $this->shouldThrow('CesarHdz\TinTan\Exceptions\ConfigException')
+            ->duringBootstrap();
 
-    //     // when
-    //     $this->version('1.0');
-    //     $this->dir('/some/dir');
+        // when
+        $this->dir('/some/dir');
 
-
-    //     // then
-    //     $this->bootstrap()->shouldHaveType('CesarHdz\TinTan\Application');
-
-    // }
+        // then
+        $this->bootstrap()->shouldHaveType('CesarHdz\TinTan\Application');
+    }
 
 
     function it_should_have_default_filters_after_contructed(){

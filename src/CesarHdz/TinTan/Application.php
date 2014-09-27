@@ -74,8 +74,7 @@ class Application extends Silex
 
     public function bootstrap()
     {
-
-        // $this->validateConfig();
+        $this->validateFields(['dir']);
 
         $this->mount('/', $this['imageController']);
 
@@ -83,16 +82,14 @@ class Application extends Silex
     }
 
 
-    protected function validateConfig(){
-        $required = ['version', 'dir'];
-
+    protected function validateFields(array $fields){
         array_map(function($field){
             if(! isset($this->values[$field])){
                 throw new Exceptions\ConfigException('version', 
                     "It's required but it have not been defined, you can set using \$app['${field}'] = <value>"
                 );
             }
-        }, $required);
+        }, $fields);
     }
 
     public function preset($preset, $filter, array $args = array())
@@ -112,4 +109,6 @@ class Application extends Silex
     {
         return $this->offsetExists($name . self::FILTER_SUFFIX);
     }
+
+
 }
