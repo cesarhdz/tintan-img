@@ -35,7 +35,7 @@ class Application extends Silex
 
     protected function setDefaultConfig(){
         // All presets must be included using $this->preset() method
-        $this['presets'] = array();
+        $this['presets'] = new PresetCollection();
 
         // Image controller will handle all requests
         $this['imageController'] = function($app){
@@ -100,7 +100,7 @@ class Application extends Silex
             );
         }
 
-        $this['imageProcessor']->addPreset($preset, $this->getFilter($filter), $args);
+        $this['presets']->add($preset, $this->getFilter($filter), $args);
 
         return $this;
     }

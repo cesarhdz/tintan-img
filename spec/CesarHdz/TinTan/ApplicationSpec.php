@@ -7,6 +7,7 @@ use Prophecy\Argument;
 use org\bovigo\vfs\vfsStream;
 
 use CesarHdz\TinTan\ImageProcessor;
+use CesarHdz\TinTan\PresetCollection;
 
 class ApplicationSpec extends ObjectBehavior
 {
@@ -47,18 +48,16 @@ class ApplicationSpec extends ObjectBehavior
     }
 
 
-    function it_should_register_presets(ImageProcessor $processor){
+    function it_should_register_presets(PresetCollection $collection){
         // setup
         $this->filterExists('size')->shouldBe(true);
-        $this['imageProcessor'] = function($app) use($processor){
-            return $processor->getWrappedObject();
-        };
+        $this['presets'] = $collection->getWrappedObject();
 
         // When
         $this->preset('thumbnail', 'size', ['width' => 150]);
 
         // Then
-        $processor->addPreset(
+        $collection->add(
             'thumbnail', 
             Argument::type('CesarHdz\TinTan\Filters\SizeFilter'), 
             ['width' => 150]
