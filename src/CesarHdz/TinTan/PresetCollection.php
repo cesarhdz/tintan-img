@@ -22,7 +22,7 @@ class PresetCollection implements \ArrayAccess, \Countable
         	}
         }
 
-        return new PresetCollection($matched);
+        return $matched;
     }
 
     public function count()
@@ -59,5 +59,4 @@ class PresetCollection implements \ArrayAccess, \Countable
     public function offsetExists($name){
 
     }
-
 }

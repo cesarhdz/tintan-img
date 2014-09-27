@@ -21,11 +21,11 @@ class PresetCollectionSpec extends ObjectBehavior
     	$this->count()->shouldReturn(0);
 
     	// When
-    	$this->add('thumbnail', $filter->getWrappedObject());
+        $this->add('thumbnail', $filter->getWrappedObject());
 
-    	// Then
-    	$this['thumbnail']->shouldHaveType('CesarHdz\TinTan\Preset');
-    	$this->get()->shouldHaveCount(1);
+        // Then
+        $this['thumbnail']->shouldHaveType('CesarHdz\TinTan\Preset');
+        $this->get()->shouldHaveCount(1);
     }
 
 
