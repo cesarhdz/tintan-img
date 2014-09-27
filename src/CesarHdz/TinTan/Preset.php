@@ -41,4 +41,8 @@ class Preset
     {
         return $this->name;
     }
+
+    public function getArguments(){
+        return $this->arguments;
+    }
 }

@@ -126,7 +126,13 @@ class IntegrationContext implements Context, SnippetAcceptingContext
      */
     public function i_register_a_preset_using_filter_options($preset, $filter, TableNode $table)
     {
-        $this->app->preset($preset, $filter);
+        $args = array();
+
+        foreach ($table as $row) {
+            $args[$row['key']] = $row['val'];
+        }
+
+        $this->app->preset($preset, $filter, $args);
     }
 
     /**
