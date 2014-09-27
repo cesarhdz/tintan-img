@@ -23,16 +23,10 @@ class ImageProcessorSpec extends ObjectBehavior
     }
 
 
-    function it_should_build_an_image_with_a_given_uri(){
+    function it_should_build_an_image_with_a_given_uri(ImageFilter $filter){
     	// setup
-    	$this->setPresets([
-    		'thumbnail' => [
-    			'filter' => 'size'
-    		],
-    		'copyright' => [
-    			'filter' => 'text'
-    		]
-    	]);
+        $this->addPreset('thumbnail',  $filter->getWrappedObject());
+    	$this->addPreset('text',  $filter->getWrappedObject());
 
     	// expect
     	$this->buildImageInfo('img/tintan.thumbnail.jpg')

@@ -22,7 +22,7 @@ class ImageProcessor
         $this->dir = rtrim($dir, '/') . '/';
     }
 
-    public function addPreset($name, ImageFilter $filter, array $config){
+    public function addPreset($name, ImageFilter $filter, array $config = []){
 		$this->presets[] = new Preset($name, $filter, $config);
     }
 
