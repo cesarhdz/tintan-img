@@ -72,6 +72,12 @@ class ApplicationSpec extends ObjectBehavior
     }
 
 
+    function it_should_have_default_filters_after_contructed(){
+        // expect
+        $this->getFilter('size')->shouldHaveType('CesarHdz\TinTan\ImageFilter');
+    }
+
+
     function _mock_fs($base, array $tree){
         $stream = vfsStream::setup($base);
 

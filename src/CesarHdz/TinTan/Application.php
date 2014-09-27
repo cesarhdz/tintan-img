@@ -11,6 +11,7 @@ class Application extends Silex
 	const NAME = 'tintan';
 	const VERSION = '0.1';
 
+    const FILTER_SUFFIX = 'ImageFilter';
 
     public function __construct(array $config = array()){
         parent::__construct($config);
@@ -40,6 +41,16 @@ class Application extends Silex
         $this['imageController'] = function($app){
             return new ImageController();
         };
+
+        // Add default filters
+        $this['sizeImageFilter'] = function(){ 
+            return new Filters\SizeFilter();
+        };
+    }
+
+
+    public function getFilter($name){
+        return  $this[$name . self::FILTER_SUFFIX];
     }
 
     public function bootstrap()
