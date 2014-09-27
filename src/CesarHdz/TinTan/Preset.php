@@ -8,25 +8,25 @@ class Preset
     const PREFIX = '.';
 
 	protected $name;
-    protected $filterName;
+    protected $filter;
     protected $arguments;
 
 
-	public function __construct($name, $filterName, array $arguments = array()){
+	public function __construct($name, $filter, array $arguments = array()){
 		$this->name = $name;
-        $this->filterName = $filterName;
+        $this->filter = $filter;
         $this->arguments = $arguments;
 	}
 
-    public function getFilterName(){
-        return $this->filterName;
+    public function getFilter(){
+        return $this->filter;
     }
 
 
-    public function match($img){
+    public function match($uri){
         $needle = self::PREFIX . $this->name;
 
-        return (strpos($img, $needle) !== false) ? true : false;
+        return (strpos($uri, $needle) !== false) ? true : false;
     }
 
 

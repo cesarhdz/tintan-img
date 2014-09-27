@@ -23,6 +23,8 @@ class ImageController implements ControllerProviderInterface
 				$app->abort(404, "Image ${uri} doen't exists");
 			}
 
+			$image = $app['imageProcessor']->process($image, $app);
+
 			// Adding response
 			$format = $image->getExtension();
 			$data = $image->getImage()->encode($format);

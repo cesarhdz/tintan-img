@@ -39,6 +39,7 @@ class ImageProcessor
             }
         }
 
+        //@TODO Save matched requests somewhere else
         $file = new ImageInfo($this->dir . $uri, $matched);
 
         // If we have a proper imagen, then it is added to Image Info
@@ -52,10 +53,12 @@ class ImageProcessor
 
     public function process(ImageInfo $img, Application $app)
     {
-        array_map(function($preset) use($app, $img){
-            $filter = $app[$preset->getFilterName()];
-            $filter->filter($img, $preset, $app);
-        }, $img->getPresets());
+        $presets = $img->getPresets();
+
+
+        foreach ($presets as $preset) {
+            $img = $preset->getFilter()->filter($img, $preset, $app);
+        }
 
         return $img;
     }

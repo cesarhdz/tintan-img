@@ -30,6 +30,10 @@ class ImageInfo extends \SplFileInfo
     	return ($this->image) ? true : false;
     }
 
+    public function get(){
+    	return $this->image;
+    }
+
     public function getImage()
     {
         return $this->image;

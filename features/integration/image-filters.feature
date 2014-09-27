@@ -22,8 +22,8 @@ Feature: Image Filters
 
     Examples:
       | image                         | width | height |
-      | '/img/tin-tan.thumbnail.jpg'  | 250   | 200    |
       | '/img/tin-tan.jpg'            | 888   | 1200   |
+      | '/img/tin-tan.thumbnail.jpg'  | 250   | 200    |
   
   @Pending
   Scenario: Wildcard Pattern

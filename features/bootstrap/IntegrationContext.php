@@ -102,12 +102,8 @@ class IntegrationContext implements Context, SnippetAcceptingContext
      * @return [type] [description]
      */
     private function getImageFromResponse(){
-        if(! $this->image){
-            $data = $this->response->getContent();
-            $this->image = imagecreatefromstring($data);
-        }
-
-        return $this->image;
+        $data = $this->response->getContent();
+        return imagecreatefromstring($data);
     }
 
 
