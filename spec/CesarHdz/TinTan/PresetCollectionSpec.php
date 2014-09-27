@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 use CesarHdz\TinTan\FilterInterface;
+use CesarHdz\TinTan\Preset;
 
 class PresetCollectionSpec extends ObjectBehavior
 {
@@ -25,5 +26,17 @@ class PresetCollectionSpec extends ObjectBehavior
     	// Then
     	$this['thumbnail']->shouldHaveType('CesarHdz\TinTan\Preset');
     	$this->get()->shouldHaveCount(1);
+    }
+
+
+    function it_should_find_all_presets_by_uri(FilterInterface $filter){
+        // expect
+        $this->findAllByUri('img/tintan.jpg')->shouldHaveCount(0);
+
+        // given
+        $this->add('thumbnail', $filter->getWrappedObject());
+
+        // when
+        $this->findAllByUri('img/tintan.thumbnail.jpg')->shouldHaveCount(1);
     }
 }

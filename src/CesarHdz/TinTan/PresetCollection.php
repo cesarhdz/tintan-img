@@ -2,15 +2,28 @@
 
 namespace CesarHdz\TinTan;
 
-class PresetCollection implements \ArrayAccess
+class PresetCollection implements \ArrayAccess, \Countable
 {
 
 	private $presets;
 
-	public function __construct(){
-		$this->presets = [];
+	public function __construct(array $presets = []){
+		$this->presets = $presets;
 	}
 
+    public function findAllByUri($uri)
+    {
+        $matched = [];
+
+        foreach ($this->presets as $preset){
+        	if($preset->match($uri)){
+        		$uri = $preset->removeFrom($uri);
+        		$matched[] = $preset;
+        	}
+        }
+
+        return new PresetCollection($matched);
+    }
 
     public function count()
     {
@@ -46,4 +59,5 @@ class PresetCollection implements \ArrayAccess
     public function offsetExists($name){
 
     }
+
 }
