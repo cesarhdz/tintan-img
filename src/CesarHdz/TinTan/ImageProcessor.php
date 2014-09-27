@@ -22,16 +22,8 @@ class ImageProcessor
         $this->dir = rtrim($dir, '/') . '/';
     }
 
-    public function addPreset($name, ImageFilter $filter, array $config = []){
+    public function addPreset($name, FilterInterface $filter, array $config = []){
 		$this->presets[] = new Preset($name, $filter, $config);
-    }
-
-    //@deprecated
-    public function setPresets(array $presets)
-    {
-        foreach ($presets as $name => $params) {
-            // $this->addPreset($name, $params['filter'], $params);
-    	}
     }
 
     public function buildImageInfo($uri)

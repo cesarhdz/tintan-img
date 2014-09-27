@@ -5,7 +5,7 @@ namespace spec\CesarHdz\TinTan;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-use CesarHdz\TinTan\ImageFilter;
+use CesarHdz\TinTan\FilterInterface;
 use CesarHdz\TinTan\Application;
 use CesarHdz\TinTan\Preset;
 use CesarHdz\TinTan\ImageInfo;
@@ -23,7 +23,7 @@ class ImageProcessorSpec extends ObjectBehavior
     }
 
 
-    function it_should_build_an_image_with_a_given_uri(ImageFilter $filter){
+    function it_should_build_an_image_with_a_given_uri(FilterInterface $filter){
     	// setup
         $this->addPreset('thumbnail',  $filter->getWrappedObject());
     	$this->addPreset('text',  $filter->getWrappedObject());
@@ -39,7 +39,7 @@ class ImageProcessorSpec extends ObjectBehavior
     }
 
 
-    function it_should_process_an_image_that_have_presets(ImageFilter $filter){
+    function it_should_process_an_image_that_have_presets(FilterInterface $filter){
     	// setup application
     	$app = new Application();
     	$app['sizeFilter'] = function($app) use($filter){

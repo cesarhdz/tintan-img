@@ -9,7 +9,7 @@ class SizeFilterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldImplement('CesarHdz\TinTan\ImageFilter');
+        $this->shouldImplement('CesarHdz\TinTan\FilterInterface');
         $this->shouldHaveType('CesarHdz\TinTan\Filters\SizeFilter');
     }
 }

@@ -86,7 +86,7 @@ class ApplicationSpec extends ObjectBehavior
     function it_should_have_default_filters_after_contructed(){
         // expect
         $this->filterExists('size')->shouldBe(true);
-        $this->getFilter('size')->shouldHaveType('CesarHdz\TinTan\ImageFilter');
+        $this->getFilter('size')->shouldHaveType('CesarHdz\TinTan\FilterInterface');
     }
 
 

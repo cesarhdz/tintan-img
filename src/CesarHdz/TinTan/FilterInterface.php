@@ -3,7 +3,7 @@
 namespace CesarHdz\TinTan;
 
 
-interface ImageFilter
+interface FilterInterface
 {
 
     public function filter(ImageInfo $image, Preset $preset, Application $app);

@@ -11,7 +11,7 @@ class Application extends Silex
 	const NAME = 'tintan';
 	const VERSION = '0.1';
 
-    const FILTER_SUFFIX = 'ImageFilter';
+    const FILTER_SUFFIX = 'FilterInterface';
 
     public function __construct(array $config = array()){
         parent::__construct($config);
@@ -62,7 +62,7 @@ class Application extends Silex
         });
 
         // Add default filters
-        $this['sizeImageFilter'] = $this->share(function(){ 
+        $this['sizeFilterInterface'] = $this->share(function(){ 
             return new Filters\SizeFilter();
         });
     }
@@ -99,7 +99,7 @@ class Application extends Silex
     {
         if(! $this->filterExists($filter)){
             throw new Exceptions\ConfigException('Preset ' . $preset,
-                "[${filter}] ImageFilter is not available"
+                "[${filter}] FilterInterface is not available"
             );
         }
 
