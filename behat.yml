@@ -1,4 +1,9 @@
 default:
+  gherkin:
+    filters:
+      # Pending features should not be executed
+      tags: ~@Pending
+
   suites:
     integration:
         paths:    [ %paths.base%/features/integration ]
