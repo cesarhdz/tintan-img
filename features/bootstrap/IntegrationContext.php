@@ -22,6 +22,11 @@ class IntegrationContext implements Context, SnippetAcceptingContext
     private $request;
     private $response;
 
+    private $dir;
+    private $imgFolder;
+
+    private $image;
+
 
     /**
      * Initializes context.
@@ -46,7 +51,7 @@ class IntegrationContext implements Context, SnippetAcceptingContext
      *
      * We make sure file exists before running tests
      */
-    public function iHaveTheseFiles(TableNode $files)
+    public function i_have_these_files(TableNode $files)
     {
         foreach ($files as $file) {
             $path = $this->getImagePath($file['file']);
@@ -57,7 +62,7 @@ class IntegrationContext implements Context, SnippetAcceptingContext
     /**
      * @When I request :uri uri
      */
-    public function iRequestAnUri($uri)
+    public function i_request_an_uri($uri)
     {
         $this->app->bootstrap();
 
@@ -73,7 +78,7 @@ class IntegrationContext implements Context, SnippetAcceptingContext
     /**
      * @Then I should get :status code
      */
-    public function iShouldGetCode($status)
+    public function i_should_get_code($status)
     {
         assert::eq($this->response->getStatusCode(), intval($status));
     }
@@ -82,7 +87,7 @@ class IntegrationContext implements Context, SnippetAcceptingContext
     /**
      * @Then I should get :type content type header
      */
-    public function iShouldGetTypeContentTypeHeader($type)
+    public function i_should_get_type_content_type_header($type)
     {
         assert::eq($this->response->headers->get('content-type'), $type);
     }
@@ -92,14 +97,52 @@ class IntegrationContext implements Context, SnippetAcceptingContext
         return $this->dir . '/' . $this->imgFolder . '/' . $file;
     }
 
+    /**
+     * Return an image from response content
+     * @return [type] [description]
+     */
+    private function getImageFromResponse(){
+        if(! $this->image){
+            $data = $this->response->getContent();
+            $this->image = imagecreatefromstring($data);
+        }
+
+        return $this->image;
+    }
+
 
     /**
      * @Then I should get an image
      */
-    public function iShouldGetAnImage()
+    public function i_should_get_an_image()
     {
         // see http://php.net/manual/en/function.imagecreatefromstring.php/
-        $data = $this->response->getContent();
-        assert::true(imagecreatefromstring($data) != false);
+        
+        assert::true($this->getImageFromResponse() != false);
     }
+
+    /**
+     * @Given I register a :presetName preset using :filterName filter, options
+     *
+     * @param String preset Name of the preset
+     * @param String filter Name of the filter without _Filter_ suffix
+     * @param TableNode options Options used to register preset
+     */
+    public function i_register_a_preset_using_filter_options($preset, $filter, TableNode $table)
+    {
+        $this->app->preset($preset, $filter);
+    }
+
+    /**
+     * @Then I should get an image of :widht x :height px
+     */
+    public function i_should_get_an_image_of_x_px($arg1, $arg2)
+    {
+        $size = getimagesize($this->getImageFromResponse());
+
+        var_dump($size);
+
+        throw new PendingException();
+    }
+
 }
