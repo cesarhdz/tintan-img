@@ -35,9 +35,9 @@ class PresetCollection implements \ArrayAccess, \Countable
         return $this->presets;
     }
 
-    public function add($name, $filter)
+    public function add($name, $filter, array $args = [])
     {
-        $this->presets[] = new Preset($name, $filter);
+        $this->presets[] = new Preset($name, $filter, $args);
     }
 
     public function offsetGet($name){

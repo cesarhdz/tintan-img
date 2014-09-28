@@ -14,11 +14,7 @@ class SizeFilter implements FilterInterface
 	public function filter(ImageInfo $image, Image $image, Preset $preset){
 		$args = $preset->getArguments();
 
-		$newImage = $image->get()->fit($args['width'], $args['height']);
-
-		$image->setImage($newImage);
-
-		return $image;
+		return $image->fit($args['width'], $args['height']);
 	}
 
 }

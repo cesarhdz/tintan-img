@@ -22,15 +22,17 @@ class ImageResolver
 
     public function resolve($uri, array $presets)
     {
+        $matches = [];
+
         // Iterate overs presets to find the image path
         foreach ($presets as $preset){
             if($preset->match($uri)){
                 $uri = $preset->removeFrom($uri);
-                $matched[] = $preset;
+                $matches[] = $preset;
             }
         }
 
-        return new ImageInfo($this->dir, $uri, $presets);
+        return new ImageInfo($this->dir, $uri, $matches);
     }
 
 }
