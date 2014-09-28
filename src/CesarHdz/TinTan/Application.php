@@ -100,7 +100,7 @@ class Application extends Silex
             );
         }
 
-        $this['presets']->add($preset, $this->getFilter($filter), $args);
+        $this['presets']->add($preset, $filter, $args);
 
         return $this;
     }

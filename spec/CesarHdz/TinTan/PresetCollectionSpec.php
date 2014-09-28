@@ -16,12 +16,12 @@ class PresetCollectionSpec extends ObjectBehavior
         $this->get()->shouldBeArray();
     }
 
-    function it_should_be_able_to_add_presets(FilterInterface $filter){
+    function it_should_be_able_to_add_presets(){
     	// setup
     	$this->count()->shouldReturn(0);
 
     	// When
-        $this->add('thumbnail', $filter->getWrappedObject());
+        $this->add('thumbnail', 'size');
 
         // Then
         $this['thumbnail']->shouldHaveType('CesarHdz\TinTan\Preset');
@@ -29,12 +29,12 @@ class PresetCollectionSpec extends ObjectBehavior
     }
 
 
-    function it_should_find_all_presets_by_uri(FilterInterface $filter){
+    function it_should_find_all_presets_by_uri(){
         // expect
         $this->findAllByUri('img/tintan.jpg')->shouldHaveCount(0);
 
         // given
-        $this->add('thumbnail', $filter->getWrappedObject());
+        $this->add('thumbnail', 'size');
 
         // when
         $this->findAllByUri('img/tintan.thumbnail.jpg')->shouldHaveCount(1);

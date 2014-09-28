@@ -57,12 +57,8 @@ class ApplicationSpec extends ObjectBehavior
         $this->preset('thumbnail', 'size', ['width' => 150]);
 
         // Then
-        $collection->add(
-            'thumbnail', 
-            Argument::type('CesarHdz\TinTan\Filters\SizeFilter'), 
-            ['width' => 150]
-        )->shouldHaveBeenCalled();
-        
+        $collection->add('thumbnail', 'size', ['width' => 150])
+            ->shouldHaveBeenCalled();
     }
 
     function it_should_have_a_dir_to_bootstrap(){

@@ -8,18 +8,18 @@ class Preset
     const PREFIX = '.';
 
 	protected $name;
-    protected $filter;
+    protected $filterName;
     protected $arguments;
 
 
-	public function __construct($name, $filter, array $arguments = array()){
+	public function __construct($name, $filterName, array $arguments = array()){
 		$this->name = $name;
-        $this->filter = $filter;
+        $this->filterName = $filterName;
         $this->arguments = $arguments;
 	}
 
-    public function getFilter(){
-        return $this->filter;
+    public function getFilterName(){
+        return $this->filterName;
     }
 
 
