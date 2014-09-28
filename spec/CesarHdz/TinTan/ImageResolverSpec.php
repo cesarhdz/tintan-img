@@ -12,9 +12,11 @@ use CesarHdz\TinTan\ImageInfo;
 
 class ImageResolverSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    
+    function it_is_initializable_and_have_a_dir()
     {
         $this->shouldHaveType('CesarHdz\TinTan\ImageResolver');
+        $this->getDir()->shouldNotBeNull();
     }
 
 
@@ -26,8 +28,10 @@ class ImageResolverSpec extends ObjectBehavior
     }
 
     function it_should_resolve_an_image_with_presets_applied(FilterInterface $filter){
-    	// given
+        // given
+        $this->beConstructedWith('/img');
     	$uri = 'tin-tan/image-path.thumbnail.jpg';
+
     	$presets = [
             new Preset('thumbnail', $filter->getWrappedObject())
         ];
@@ -37,6 +41,7 @@ class ImageResolverSpec extends ObjectBehavior
 
     	// then
     	$info->getPresets()->shouldHaveCount(1);
-    	$info->getPathName()->shouldReturn('tin-tan/image-path.jpg');
+        $info->getUri()->shouldReturn('tin-tan/image-path.jpg');
+    	$info->getPathName()->shouldReturn('/img/tin-tan/image-path.jpg');
     }
 }
