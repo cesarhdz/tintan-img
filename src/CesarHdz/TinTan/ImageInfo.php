@@ -10,34 +10,17 @@ class ImageInfo extends \SplFileInfo
 	protected $presets;
 	protected $image;
 
-	public function __construct($file, array $presets = array()){
- 		parent::__construct($file);
+    protected $uri;
+
+	public function __construct($baseDir, $uri, array $presets = array()){
+ 		parent::__construct($baseDir . $uri);
  		$this->presets = $presets;
+        $this->uri = $uri;
 	}
 
 	public function getPresets(){
 		return $this->presets;
 	}
-
-
-	public function setImage(Image $image){
-		$this->image = $image;
-	}
-
-
-    public function exists()
-    {
-    	return ($this->image) ? true : false;
-    }
-
-    public function get(){
-    	return $this->image;
-    }
-
-    public function getImage()
-    {
-        return $this->image;
-    }
 
     public function isImage()
     {
@@ -53,5 +36,10 @@ class ImageInfo extends \SplFileInfo
 
 		// We only check that mime starts with 'image' prefix
 		return (explode('/', $mime)[0] == 'image') ? true : false;
+    }
+
+    public function getUri()
+    {
+        return $this->uri;
     }
 }
