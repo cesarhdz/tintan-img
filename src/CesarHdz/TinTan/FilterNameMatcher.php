@@ -2,6 +2,7 @@
 
 namespace CesarHdz\TinTan;
 
+//@deprecated
 class FilterNameMatcher
 {
 

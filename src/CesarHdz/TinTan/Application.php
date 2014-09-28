@@ -11,7 +11,7 @@ class Application extends Silex
 	const NAME = 'tintan';
 	const VERSION = '0.1';
 
-    const FILTER_SUFFIX = 'FilterImage';
+    const FILTER_SUFFIX = '_filter_image';
 
     public function __construct(array $config = array()){
         parent::__construct($config);
@@ -35,12 +35,12 @@ class Application extends Silex
 
     protected function setDefaultConfig(){
         // Image controller will handle all requests
-        $this['imageController'] = function($app){
+        $this['image_controller'] = function($app){
             return new ImageController();
         };
 
         // Manaer 
-        $this['imageManager'] = $this->share(function($app){
+        $this['image_manager'] = $this->share(function($app){
             $key = 'imageManager.adapter';
             $config = array();
 
@@ -52,20 +52,20 @@ class Application extends Silex
         });
 
         // ImageProcessor
-        $this['imageProcessor'] = $this->share(function($app){
-            $processor = new ImageProcessor($app['imageManager'], $app['dir']);
+        $this['image_processor'] = $this->share(function($app){
+            $processor = new ImageProcessor($app['image_manager'], $app['dir']);
 
             return $processor;
         });
 
         // Add default filters
-        $this['sizeFilterImage'] = $this->share(function(){ 
+        $this['size_filter_image'] = $this->share(function(){ 
             return new Filters\SizeFilter();
         });
 
 
         // Image Resolver is added
-        $this['imageResolver'] = $this->share(function(){
+        $this['image_resolver'] = $this->share(function(){
             return new ImageResolver();
         });
     }
@@ -80,12 +80,12 @@ class Application extends Silex
         $this->validateFields(['dir']);
 
         // Match imageresolver dir
-        $this->extend('imageResolver', function ($resolver, $app){
+        $this->extend('image_resolver', function ($resolver, $app){
             $resolver->setDir($app['dir']);
             return $resolver;
         });
 
-        $this->mount('/', $this['imageController']);
+        $this->mount('/', $this['image_controller']);
 
         return $this;
     }
@@ -109,7 +109,7 @@ class Application extends Silex
             );
         }
 
-        $this['imageResolver']->addPreset($name, $filter, $args);
+        $this['image_resolver']->addPreset($name, $filter, $args);
 
         return $this;
     }

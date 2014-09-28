@@ -44,18 +44,18 @@ class ApplicationSpec extends ObjectBehavior
         $this->bootstrap();
 
         // then
-        $this['imageProcessor']->shouldHaveType('CesarHdz\TinTan\ImageProcessor');
-        $this['imageResolver']->shouldHaveType('CesarHdz\TinTan\ImageResolver');
+        $this['image_processor']->shouldHaveType('CesarHdz\TinTan\ImageProcessor');
+        $this['image_resolver']->shouldHaveType('CesarHdz\TinTan\ImageResolver');
 
         // and
-        $this['imageResolver']->getDir()->shouldBe('./');
+        $this['image_resolver']->getDir()->shouldBe('./');
     }
 
 
     function it_should_register_presets(ImageResolver $resolver){
         // setup
         $this->filterExists('size')->shouldBe(true);
-        $this['imageResolver'] = $resolver->getWrappedObject();
+        $this['image_resolver'] = $resolver->getWrappedObject();
 
         // When
         $this->addPreset('thumbnail', 'size', ['width' => 150]);
