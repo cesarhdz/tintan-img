@@ -11,7 +11,7 @@ class Application extends Silex
 	const NAME = 'tintan';
 	const VERSION = '0.1';
 
-    const FILTER_SUFFIX = 'FilterInterface';
+    const FILTER_SUFFIX = 'FilterImage';
 
     public function __construct(array $config = array()){
         parent::__construct($config);
@@ -34,9 +34,6 @@ class Application extends Silex
 
 
     protected function setDefaultConfig(){
-        // All presets must be included using $this->preset() method
-        $this['presets'] = new PresetCollection();
-
         // Image controller will handle all requests
         $this['imageController'] = function($app){
             return new ImageController();
@@ -62,15 +59,15 @@ class Application extends Silex
         });
 
         // Add default filters
-        $this['sizeFilterInterface'] = $this->share(function(){ 
+        $this['sizeFilterImage'] = $this->share(function(){ 
             return new Filters\SizeFilter();
         });
 
 
         // Image Resolver is added
-        $this['imageResolver'] = function(){
+        $this['imageResolver'] = $this->share(function(){
             return new ImageResolver();
-        };
+        });
     }
 
 
@@ -104,15 +101,15 @@ class Application extends Silex
         }, $fields);
     }
 
-    public function preset($preset, $filter, array $args = array())
+    public function addPreset($name, $filter, array $args = array())
     {
         if(! $this->filterExists($filter)){
-            throw new Exceptions\ConfigException('Preset ' . $preset,
-                "[${filter}] FilterInterface is not available"
+            throw new Exceptions\ConfigException('Preset ' . $name,
+                "[${filter}] FilterImage is not available"
             );
         }
 
-        $this['presets']->add($preset, $filter, $args);
+        $this['imageResolver']->addPreset($name, $filter, $args);
 
         return $this;
     }

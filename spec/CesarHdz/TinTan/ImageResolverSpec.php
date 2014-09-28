@@ -32,12 +32,10 @@ class ImageResolverSpec extends ObjectBehavior
         $this->beConstructedWith('/img');
     	$uri = 'tin-tan/image-path.thumbnail.jpg';
 
-    	$presets = [
-            new Preset('thumbnail', $filter->getWrappedObject())
-        ];
+    	$this->addPreset('thumbnail', 'size');
 
     	// when
-    	$info = $this->resolve($uri, $presets);
+    	$info = $this->resolve($uri);
 
     	// then
     	$info->getPresets()->shouldHaveCount(1);

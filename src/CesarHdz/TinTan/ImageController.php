@@ -17,9 +17,7 @@ class ImageController implements ControllerProviderInterface
 
    		$controllers->get('/{uri}', function($uri, Request $request) use($app){
    			// Get presets
-   			$imageInfo =  $app['imageResolver']->resolve(
-   				$uri, $app['presets']->get()
-   			);
+   			$imageInfo =  $app['imageResolver']->resolve($uri);
 
 			// If we don't have an image, a 404 status code is returned
 			if(! $imageInfo->isImage()){

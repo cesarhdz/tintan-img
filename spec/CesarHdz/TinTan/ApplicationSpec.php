@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use org\bovigo\vfs\vfsStream;
 
 use CesarHdz\TinTan\ImageProcessor;
-use CesarHdz\TinTan\PresetCollection;
+use CesarHdz\TinTan\ImageResolver;
 
 class ApplicationSpec extends ObjectBehavior
 {
@@ -52,16 +52,16 @@ class ApplicationSpec extends ObjectBehavior
     }
 
 
-    function it_should_register_presets(PresetCollection $collection){
+    function it_should_register_presets(ImageResolver $resolver){
         // setup
         $this->filterExists('size')->shouldBe(true);
-        $this['presets'] = $collection->getWrappedObject();
+        $this['imageResolver'] = $resolver->getWrappedObject();
 
         // When
-        $this->preset('thumbnail', 'size', ['width' => 150]);
+        $this->addPreset('thumbnail', 'size', ['width' => 150]);
 
         // Then
-        $collection->add('thumbnail', 'size', ['width' => 150])
+        $resolver->addPreset('thumbnail', 'size', ['width' => 150])
             ->shouldHaveBeenCalled();
     }
 

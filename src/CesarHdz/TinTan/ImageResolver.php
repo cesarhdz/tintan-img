@@ -6,9 +6,11 @@ class ImageResolver
 {
 
     private $dir;
+    private $presets;
 
     public function __construct($dir = null){
         $this->setDir($dir ?: getcwd());
+        $this->presets = [];
     }
 
     public function setDir($dir){
@@ -20,12 +22,20 @@ class ImageResolver
         return $this->dir;
     }
 
-    public function resolve($uri, array $presets)
+    public function addPreset($name, $filter, array $args = []){
+        $this->presets[] = new Preset($name, $filter, $args);
+    }
+
+    public function getPresets(){
+        return $this->presets;
+    }
+
+    public function resolve($uri)
     {
         $matches = [];
 
         // Iterate overs presets to find the image path
-        foreach ($presets as $preset){
+        foreach ($this->presets as $preset){
             if($preset->match($uri)){
                 $uri = $preset->removeFrom($uri);
                 $matches[] = $preset;

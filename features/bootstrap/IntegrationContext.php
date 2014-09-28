@@ -132,7 +132,7 @@ class IntegrationContext implements Context, SnippetAcceptingContext
             $args[$row['key']] = $row['val'];
         }
 
-        $this->app->preset($preset, $filter, $args);
+        $this->app->addPreset($preset, $filter, $args);
     }
 
     /**
