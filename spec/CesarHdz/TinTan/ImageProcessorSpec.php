@@ -45,4 +45,15 @@ class ImageProcessorSpec extends ObjectBehavior
         // then
         $img->shouldHaveType('Intervention\Image\Image');
     }
+
+
+
+    function it_should_return_an_image_response(Image $image){
+        $image->encode(Argument::any())->willReturn($image->getWrappedObject());
+        $image->getEncoded()->willReturn($image->getWrappedObject());
+        $image->__toString()->willReturn('Image Encoded');
+
+        $this->respond(new ImageInfo('a', 'b'), $image->getWrappedObject())
+            ->shouldHaveType('Symfony\Component\HttpFoundation\Response');
+    }
 }

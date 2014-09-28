@@ -3,6 +3,9 @@
 namespace CesarHdz\TinTan;
 
 use Intervention\Image\ImageManager;
+use Intervention\Image\Image;
+
+use Symfony\Component\HttpFoundation\Response;
 
 class ImageProcessor
 {
@@ -40,4 +43,16 @@ class ImageProcessor
         return $img;
     }
 
+
+    public function respond(ImageInfo $info, Image $image)
+    {
+        // Adding response
+        $format = $info->getExtension();
+        $data = $image->encode($format);
+
+        $response = new Response($data->getEncoded());
+        $response->headers->set('Content-Type', "image/{$format}");
+
+        return $response;
+    }
 }
