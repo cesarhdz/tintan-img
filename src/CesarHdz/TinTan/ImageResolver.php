@@ -5,8 +5,16 @@ namespace CesarHdz\TinTan;
 class ImageResolver
 {
 
-    public function resolve($argument1, $argument2)
+    public function resolve($uri, array $presets)
     {
-        // TODO: write logic here
+    	// Iterate overs presets to find the image path
+    	foreach ($presets as $preset){
+           	if($preset->match($uri)){
+        		$uri = $preset->removeFrom($uri);
+        		$matched[] = $preset;
+        	}
+    	}
+
+    	return new ImageInfo($uri, $presets);
     }
 }
