@@ -144,4 +144,11 @@ class IntegrationContext implements Context, SnippetAcceptingContext
         assert::eq(imagesy($this->getImageFromResponse()), $height);
     }
 
+    /**
+     * @Given I register a :preset preset using :filter filter
+     */
+    public function i_register_a_preset_using_filter($preset, $filter)
+    {
+        $this->app->addPreset($preset, $filter);
+    }
 }

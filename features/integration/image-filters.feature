@@ -25,11 +25,10 @@ Feature: Image Filters
       | '/img/tin-tan.jpg'            | 888   | 1200   |
       | '/img/tin-tan.thumbnail.jpg'  | 250   | 250    |
   
-  @Pending
   Scenario: Wildcard Pattern
-    Given I register a "resize" preset using "Size" filter and "{:width}x{:height}" pattern
-    When I request "tin-tan/hat.300x300.jpg" uri
-    Then I should get an image of "300" x "300"> px
+    Given I register a "{:width}x{:height}" preset using "size" filter
+    When I request "/img/tin-tan.300x300.jpg" uri
+    Then I should get an image of "300" x "300" px
 
   @Pending
   Scenario Outline: Required preset
