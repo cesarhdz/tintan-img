@@ -65,6 +65,12 @@ class Application extends Silex
         $this['sizeFilterInterface'] = $this->share(function(){ 
             return new Filters\SizeFilter();
         });
+
+
+        // Image Resolver is added
+        $this['imageResolver'] = function(){
+            return new ImageResolver();
+        };
     }
 
 
@@ -75,6 +81,12 @@ class Application extends Silex
     public function bootstrap()
     {
         $this->validateFields(['dir']);
+
+        // Match imageresolver dir
+        $this->extend('imageResolver', function ($resolver, $app){
+            $resolver->setDir($app['dir']);
+            return $resolver;
+        });
 
         $this->mount('/', $this['imageController']);
 

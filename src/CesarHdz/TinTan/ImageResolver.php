@@ -11,7 +11,7 @@ class ImageResolver
         $this->setDir($dir ?: getcwd());
     }
 
-    protected function setDir($dir){
+    public function setDir($dir){
         $this->dir = rtrim($dir, '/') . '/';
     }
 

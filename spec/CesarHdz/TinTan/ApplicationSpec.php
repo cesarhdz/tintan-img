@@ -35,7 +35,7 @@ class ApplicationSpec extends ObjectBehavior
 
     }
 
-    function it_should_register_image_manager_as_service_after_bootstrap(){
+    function it_should_register_dependencies_after_bootstrap(){
         // setup
         $this->dir('./');
         $this->version('1.0');
@@ -45,6 +45,10 @@ class ApplicationSpec extends ObjectBehavior
 
         // then
         $this['imageProcessor']->shouldHaveType('CesarHdz\TinTan\ImageProcessor');
+        $this['imageResolver']->shouldHaveType('CesarHdz\TinTan\ImageResolver');
+
+        // and
+        $this['imageResolver']->getDir()->shouldBe('./');
     }
 
 
