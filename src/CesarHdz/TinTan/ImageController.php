@@ -16,23 +16,17 @@ class ImageController implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
    		$controllers->get('/{uri}', function($uri, Request $request) use($app){
-			$image = $app['imageProcessor']->buildImageInfo($uri);
+   			// Get presets
+   			$imageInfo =  $app['imageResolver']->resolve($uri, $app['presets']);
 
 			// If we don't have an image, a 404 status code is returned
-			if(! $image->exists()){
+			if(! $image->isImage()){
 				$app->abort(404, "Image ${uri} doen't exists");
 			}
 
-			$image = $app['imageProcessor']->process($image, $app);
+			$image = $app['imageProcessor']->process($imageInfo, $app);
 
-			// Adding response
-			$format = $image->getExtension();
-			$data = $image->getImage()->encode($format);
-
-			$response = new Response($data->getEncoded());
-			$response->headers->set('Content-Type', "image/{$format}");
-
-			return $response;
+			return $app['imageProcessor']->respondWith($image);
 		})
 
 		->assert('uri', '[\w\-\._/]+');
