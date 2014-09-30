@@ -23,9 +23,9 @@ class ImageRouter
     	// Set definitions for number and string
     	$this->definitions = [];
 
-    	$this->definitions['alphanumeric'] = '([a-zA-Z0-9-_]+)';
-    	$this->definitions['alphabetic'] = '([a-zA-Z-_]+)';
-    	$this->definitions['numeric'] = '(\d+)';
+    	$this->definitions['alpha'] = '([a-zA-Z-_]+)';
+    	$this->definitions['alphanum'] = '([a-zA-Z0-9-_]+)';
+    	$this->definitions['num'] = '(\d+)';
     }
 
     /**
@@ -40,30 +40,73 @@ class ImageRouter
     {
     	$info = $this->getUriInfo($uri);
 
+    	$rules = array_map([$this, 'buildPattern'], $rules);
 
     	// Collect patterns
     	$matched = array_map(function($pattern) use ($rules){
     		
-    		// Iterate over matches
-    		foreach ($rules as $rule){
-    			preg_match_all(
-    				'/'.$rule->getPattern().'/', 
-    				$pattern,
-    				$matches
-    			);
-
-    			if($matches[0]){
-	    			// We have a match
-	    			return $rule;
-    			}
-    		}
-
-
+    		return $this->match($pattern, $rules);
 
     	}, $info['patterns']);
 
+    	var_dump($matched);
+
 
     	return $matched;
+    }
+
+
+    protected function buildPattern(FilterRule $rule){
+
+    	$pattern = $rule->getPattern();
+
+    	// extract wildcards
+    	preg_match_all('/{(.*?)}/', $rule->getPattern(), $matches);
+
+    	// Second item contains only wildcards
+    	$matches = $matches[1];
+    	$args = [];
+
+    	foreach($matches as $match){
+    		$parts = explode(':', $match);
+    		$args[] = $parts[0];
+
+    		$definition = $this->getDefinition($parts[1]);
+
+    		// Replace patter with definition
+    		$pattern = str_replace('{'.$match.'}', $definition, $pattern);
+    	}
+
+    	return [
+    		'pattern' => '#'.$pattern.'#',
+    		'args' => $args,
+    		'rule' => $rule
+    	];
+    }
+
+
+    protected function match($pattern, array $rules){
+		// Iterate over matches
+		foreach ($rules as $rule){
+			preg_match_all(
+				$rule['pattern'],
+				$pattern,
+				$matches
+			);
+
+			if($matches[0]){
+    			// We have a match
+    			$rule['matches'] = $matches;
+    				
+    			$rule['params'] = array();
+
+    			foreach ($rule['args'] as $i => $arg){
+    				$rule['params'][$arg] = $matches[$i + 1][0];
+    			}
+
+    			return $rule;
+			}
+		}
     }
 
 

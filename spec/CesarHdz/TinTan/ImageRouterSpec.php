@@ -14,26 +14,42 @@ class ImageRouterSpec extends ObjectBehavior
         $this->shouldHaveType('CesarHdz\TinTan\ImageRouter');
     }
 
-    function it_should_have_digit_and_alphabetic_definitions(){
+    function it_should_have_digit_and_alpha_definitions(){
     	// expect
-    	$this->getDefinition('numeric')->shouldBeString();
-    	$this->getDefinition('alphabetic')->shouldBeString();
+    	$this->getDefinition('num')->shouldBeString();
+    	$this->getDefinition('alpha')->shouldBeString();
     }
 
 
-    function it_should_convert_an_uri_into_parameters(){
-    	// given
-        $rules = [
-            new FilterRule('rule', 'filter', []),
-            new FilterRule('noMatch', 'filter', []),
-            new FilterRule('{width}x{height}', 'filter', []),
-        ];
+    // function it_should_convert_an_uri_into_rules(){
+    //     // when
+    //     $rules = $this->matchRules(
+    //         '/img/name.rule.jpg', 
+    //         $this->getDefaultRules()
+    //     );
 
-    	// when
-    	$rules = $this->matchRules('/img/name.rule.jpg', $rules);
+    //     //then
+    //     $rules->shouldBeArray();
+    //     $rules->shouldHaveCount(1);
+    // }
 
-    	//then
-    	$rules->shouldBeArray();
-    	$rules->shouldHaveCount(1);
+
+    function it_should_extract_parameters_from_uri(){
+        // when
+        $rules = $this->matchRules(
+            '/img/name.150x250.jpg',
+            $this->getDefaultRules()
+        );
+
+        // then
+        $rules[0]['params']['width']->shouldReturn('150');
+        $rules[0]['params']['height']->shouldReturn('250');
+
     }
+
+
+    function getDefaultRules(){ return [
+        new FilterRule('rule', 'filter', []),
+        new FilterRule('{width:num}x{height:num}', 'size', []),
+    ];}
 }
