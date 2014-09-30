@@ -9,7 +9,7 @@ class FilterRule
 	private $filterName;
 	private $params;
 
-    public function __construct($pattern, $filterName, $params)
+    public function __construct($pattern, $filterName, array $params = [])
     {
         $this->pattern = $pattern;
         $this->filterName = $filterName;
