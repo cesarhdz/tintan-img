@@ -8,6 +8,7 @@ class ImageRouter
 	const RULE_DELIMITER = '.';
 
 	private $definitions;
+    private $rules;
 
 	public function __construct(){
 		$this->setDefaultDefinitions();
@@ -27,6 +28,17 @@ class ImageRouter
     	$this->definitions['alpha'] = '([a-zA-Z-_]+)';
     	$this->definitions['alphanum'] = '([a-zA-Z0-9-_]+)';
     	$this->definitions['num'] = '(\d+)';
+    }
+
+
+    public function addRule($pattern, $filter, array $arguments = [])
+    {
+        $this->rules[] = new FilterRule($pattern, $filter, $arguments);
+    }
+
+    public function getRules()
+    {
+        return $this->rules;
     }
 
 
@@ -95,23 +107,24 @@ class ImageRouter
 
 
     protected function match($pattern, array $rules){
-		// Iterate over matches
-		foreach ($rules as $rule){
-			preg_match_all(
-				$rule->getRegex(),
-				$pattern,
-				$matches
-			);
+        // Iterate over matches
+        foreach ($rules as $rule){
+            preg_match_all(
+                $rule->getRegex(),
+                $pattern,
+                $matches
+            );
 
-    		// Only when we have a match, we return a rule
+            // Only when we have a match, we return a rule
             if($matches[0]){
                 // Add dynamic param values
-    			foreach ($rule->getArguments() as $i => $arg){
-    				$rule->addParam($arg, $matches[$i + 1][0]);
-    			}
+                foreach ($rule->getArguments() as $i => $arg){
+                    $rule->addParam($arg, $matches[$i + 1][0]);
+                }
 
-    			return $rule;
-			}
-		}
+                return $rule;
+            }
+        }
     }
+
 }

@@ -21,6 +21,19 @@ class ImageRouterSpec extends ObjectBehavior
     	$this->getDefinition('alpha')->shouldBeString();
     }
 
+    function it_should_register_new_rules(){
+        // given
+        $this->addRule('thumbnail', 'size');
+        $this->addRule('grayscale', 'color', ['opacity' => .5]);
+
+        // when
+        $rules = $this->getRules();
+
+        // then
+        $rules->shouldHaveCount(2);
+        $rules[0]->shouldHaveType('CesarHdz\TinTan\FilterRule');
+    }
+
 
     function it_should_build_rules(){
         // given
