@@ -11,7 +11,7 @@ Feature: Image Filters
       | tin-tan.gif |
       | tin-tan.txt |
 
-    And I register a "thumbnail" preset using "size" filter, options
+    And I register a "thumbnail" rule using "size" filter, options
       | key    | val |
       | width  | 250 |
       | height | 250 |
@@ -26,13 +26,13 @@ Feature: Image Filters
       | '/img/tin-tan.thumbnail.jpg'  | 250   | 250    |
   
   Scenario: Wildcard Pattern
-    Given I register a "{:width}x{:height}" preset using "size" filter
+    Given I register a "{width:num}x{height:num}" rule using "size" filter
     When I request "/img/tin-tan.300x300.jpg" uri
     Then I should get an image of "300" x "300" px
 
   @Pending
-  Scenario Outline: Required preset
-    Given I mark "thumbnail" preset as required for "tin-tan/" images
+  Scenario Outline: Required rule
+    Given I mark "thumbnail" rule as required for "tin-tan/" images
     When I request "tin-tan/hat.jpg" uri
     Then I should get an image of "250" x "250" px
 
@@ -44,7 +44,7 @@ Feature: Image Filters
 
   @Pending
   Scenario: Multiple Filters
-    Given I register a "grayscale" preset using "Grayscale" filter and "gray" pattern
+    Given I register a "grayscale" rule using "Grayscale" filter and "gray" pattern
     When I request "tin-tan/hat.thumbnail.watermark.png" uri
     Then I should get an image of "250" x "250" px
     And I should get an image with the text "Copyright Notice"

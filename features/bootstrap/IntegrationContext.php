@@ -118,13 +118,13 @@ class IntegrationContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Given I register a :presetName preset using :filterName filter, options
+     * @Given I register a :pattern rule using :filterName filter, options
      *
-     * @param String preset Name of the preset
+     * @param String pattern Pattern of the rule
      * @param String filter Name of the filter without _Filter_ suffix
-     * @param TableNode options Options used to register preset
+     * @param TableNode options Options used to register rule
      */
-    public function i_register_a_preset_using_filter_options($preset, $filter, TableNode $table)
+    public function i_register_a_rule_using_filter_options($pattern, $filter, TableNode $table)
     {
         $args = array();
 
@@ -132,7 +132,7 @@ class IntegrationContext implements Context, SnippetAcceptingContext
             $args[$row['key']] = $row['val'];
         }
 
-        $this->app->addPreset($preset, $filter, $args);
+        $this->app->addRule($pattern, $filter, $args);
     }
 
     /**
@@ -145,10 +145,10 @@ class IntegrationContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Given I register a :preset preset using :filter filter
+     * @Given I register a :preset rule using :filter filter
      */
-    public function i_register_a_preset_using_filter($preset, $filter)
+    public function i_register_a_rule_using_filter($pattern, $filter)
     {
-        $this->app->addPreset($preset, $filter);
+        $this->app->addRule($pattern, $filter);
     }
 }
