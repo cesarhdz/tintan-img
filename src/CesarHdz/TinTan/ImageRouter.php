@@ -12,6 +12,7 @@ class ImageRouter
 
 	public function __construct(){
 		$this->setDefaultDefinitions();
+        $this->rules = [];
 	}
 
     public function getDefinition($name)

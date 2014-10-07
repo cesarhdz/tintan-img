@@ -64,7 +64,12 @@ class Application extends Silex
         });
 
 
-        // Image Resolver is added
+        // Image Router is added
+        $this['image_router'] = $this->share(function(){
+            return new ImageRouter();
+        });
+
+        // Image Router is added
         $this['image_resolver'] = $this->share(function(){
             return new ImageResolver();
         });
@@ -85,6 +90,9 @@ class Application extends Silex
             return $resolver;
         });
 
+        // Ime router build rules
+        $this['image_router']->buildRules();
+
         $this->mount('/', $this['image_controller']);
 
         return $this;
@@ -101,23 +109,14 @@ class Application extends Silex
         }, $fields);
     }
 
-    public function addPreset($name, $filter, array $args = array())
-    {
-        if(! $this->filterExists($filter)){
-            throw new Exceptions\ConfigException('Preset ' . $name,
-                "[${filter}] FilterImage is not available"
-            );
-        }
-
-        $this['image_resolver']->addPreset($name, $filter, $args);
-
-        return $this;
-    }
-
     public function filterExists($name)
     {
         return $this->offsetExists($name . self::FILTER_SUFFIX);
     }
 
 
+    public function addRule($pattern, $filter, array $args = [])
+    {
+        $this['image_router']->addRule($pattern, $filter, $args);
+    }
 }

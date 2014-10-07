@@ -8,6 +8,7 @@ use org\bovigo\vfs\vfsStream;
 
 use CesarHdz\TinTan\ImageProcessor;
 use CesarHdz\TinTan\ImageResolver;
+use CesarHdz\TinTan\ImageRouter;
 
 class ApplicationSpec extends ObjectBehavior
 {
@@ -27,6 +28,15 @@ class ApplicationSpec extends ObjectBehavior
         $this['dir']->shouldBe('some/dir');
     }
 
+    function it_should_register_default_dependencies_after_construct(){
+        // setup
+        $this->dir('./');
+        $this->version('1.0');
+
+        // then
+        $this['image_processor']->shouldHaveType('CesarHdz\TinTan\ImageProcessor');
+        $this['image_router']->shouldHaveType('CesarHdz\TinTan\ImageRouter');
+    }
 
     function it_should_have_fluent_interface_to_set_dir_and_version(){
         // expect
@@ -35,35 +45,6 @@ class ApplicationSpec extends ObjectBehavior
 
     }
 
-    function it_should_register_dependencies_after_bootstrap(){
-        // setup
-        $this->dir('./');
-        $this->version('1.0');
-
-        //when
-        $this->bootstrap();
-
-        // then
-        $this['image_processor']->shouldHaveType('CesarHdz\TinTan\ImageProcessor');
-        $this['image_resolver']->shouldHaveType('CesarHdz\TinTan\ImageResolver');
-
-        // and
-        $this['image_resolver']->getDir()->shouldBe('./');
-    }
-
-
-    function it_should_register_presets(ImageResolver $resolver){
-        // setup
-        $this->filterExists('size')->shouldBe(true);
-        $this['image_resolver'] = $resolver->getWrappedObject();
-
-        // When
-        $this->addPreset('thumbnail', 'size', ['width' => 150]);
-
-        // Then
-        $resolver->addPreset('thumbnail', 'size', ['width' => 150])
-            ->shouldHaveBeenCalled();
-    }
 
     function it_should_have_a_dir_to_bootstrap(){
         // expect
@@ -75,6 +56,28 @@ class ApplicationSpec extends ObjectBehavior
 
         // then
         $this->bootstrap()->shouldHaveType('CesarHdz\TinTan\Application');
+    }
+
+    function it_should_build_routes_during_bootstrap(ImageRouter $router, ImageResolver $resolver){
+        // setup
+        $this->dir('/');
+        $this['image_router'] = $this->share(function() use ($router){
+            return $router->getWrappedObject();
+        });        
+
+        $this['image_resolver'] = $this->share(function() use ($resolver){
+            return $resolver->getWrappedObject();
+        });
+
+        // given
+        $this->addRule('thumbnail', 'size', ['width' => 150]);
+
+        // when
+        $this->bootstrap();
+
+        // then
+        $router->buildRules()->shouldHaveBeenCalled();
+        // $this['image_resolver']->getDir()->shouldBe('./');
     }
 
 
