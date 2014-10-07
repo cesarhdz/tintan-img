@@ -37,17 +37,21 @@ class ImageRouterSpec extends ObjectBehavior
 
     function it_should_build_rules(){
         // given
-        $rule = new FilterRule('{width:num}x{height:num}', 'size', []);
+        $this->addRule('thumbnail', 'size');
+        $this->addRule('{width:num}x{height:num}', 'size', []);
 
         // when
-        $rule = $this->buildRule($rule);
+        $this->buildRules();
+
+        // and
+        $rules = $this->getRules();
 
         //then
-        $rule->shouldHaveType('CesarHdz\TinTan\FilterRule');
-        $rule->getArguments()->shouldBeArray();
-        $rule->getArguments()->shouldHaveCount(2);
+        $rules->shouldHaveCount(2);
+        
+        $rules[0]->getRegex()->shouldReturn('#thumbnail#');
+        $rules[1]->getRegex()->shouldReturn('#(\d+)x(\d+)#');
 
-        $rule->getRegex()->shouldReturn('#(\d+)x(\d+)#');
     }
 
     function it_should_convert_uri_into_a_route(){
@@ -61,40 +65,21 @@ class ImageRouterSpec extends ObjectBehavior
     }
 
 
-    function it_should_convert_an_uri_into_rules(){
+    function it_should_return_matched_rules_of_a_route(){
+        // given
+        $this->addRule('rule', 'filter');
+        $this->addRule('{width:num}x{height:num}', 'size', []);
+
+        // and
+        $this->buildRules();
+
         // when
-        $rules = $this->matchRules(
-            new Route('/img/name.rule.jpg', '/img/name.jpg', ['rule']), 
-            $this->getDefaultRules()
-        );
-
-        //then
-        $rules->shouldBeArray();
-        $rules->shouldHaveCount(1);
-    }
-
-
-    function it_should_extract_parameters_from_uri(){
-        // when
-        $rules = $this->matchRules(
-            new Route('/img/name.150x250.jpg', '/img/name.jpg', ['150x250']), 
-            $this->getDefaultRules()
+        $rules = $this->getRulesForRoute(
+            new Route('/img/name.150x250.jpg', '/img/name.jpg', ['150x250'])
         );
 
         // then
         $rules[0]->getParams()['width']->shouldReturn('150');
         $rules[0]->getParams()['height']->shouldReturn('250');
-    }
-
-
-    function getDefaultRules(){ 
-        $rule1 = new FilterRule('rule', 'filter', []);
-        $rule1->setRegex('#rule#');
-
-        $rule2 = new FilterRule('{width:num}x{height:num}', 'size', []);
-        $rule2->setRegex('#(\d+)x(\d+)#');
-        $rule2->setArguments(['width', 'height']);
-
-        return [$rule1, $rule2];
     }
 }

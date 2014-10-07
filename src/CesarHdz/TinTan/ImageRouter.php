@@ -42,8 +42,12 @@ class ImageRouter
     }
 
 
-    public function buildRule(FilterRule $rule){
+    public function buildRules()
+    {
+        $this->rules = array_map([$this, 'buildRule'], $this->rules);
+    }
 
+    protected function buildRule(FilterRule $rule){
         $pattern = $rule->getPattern();
 
         // extract wildcards
@@ -84,20 +88,19 @@ class ImageRouter
         return new Route($uri, $path, $parts);
     }
 
-        /**
-     * Matches an uri against a set of rules
+    /**
+     * Matches a Route against a registerd routes
      * and populate dynamic params
      * 
      * @param  String               $uri    Requested URI
-     * @param  Array<FilterRule>    $rules  Rules
      * @return Array<FilterRule>            Matches rules sorted
      */
-    public function matchRules(Route $route, array $rules = [])
+    public function getRulesForRoute(Route $route)
     {
         // Collect patterns
-        $matched = array_map(function($pattern) use ($rules){
+        $matched = array_map(function($pattern){
             
-            return $this->match($pattern, $rules);
+            return $this->match($pattern);
 
         }, $route->getPatterns());
 
@@ -106,9 +109,9 @@ class ImageRouter
 
 
 
-    protected function match($pattern, array $rules){
+    protected function match($pattern){
         // Iterate over matches
-        foreach ($rules as $rule){
+        foreach ($this->rules as $rule){
             preg_match_all(
                 $rule->getRegex(),
                 $pattern,
@@ -126,5 +129,4 @@ class ImageRouter
             }
         }
     }
-
 }
