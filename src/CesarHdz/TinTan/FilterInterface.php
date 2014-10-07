@@ -7,6 +7,6 @@ use Intervention\Image\Image;
 interface FilterInterface
 {
 
-    public function filter(ImageInfo $info, Image $image, Preset $preset);
+    public function filter(ImageInfo $info, Image $image, FilterRule $preset);
    
 }

@@ -7,7 +7,7 @@ use Prophecy\Argument;
 
 use CesarHdz\TinTan\Application;
 use CesarHdz\TinTan\ImageInfo;
-use CesarHdz\TinTan\Preset;
+use CesarHdz\TinTan\FilterRule;
 use CesarHdz\TinTan\FilterInterface;
 
 use Intervention\Image\ImageManager;
@@ -24,7 +24,7 @@ class ImageProcessorSpec extends ObjectBehavior
 
     function it_should_process_an_image_info_and_returns_a_real_image(
         Application $app, 
-        Preset $preset,
+        FilterRule $rule,
         ImageManager $manager,
         FilterInterface $filter,
         Image $image
@@ -37,10 +37,14 @@ class ImageProcessorSpec extends ObjectBehavior
         $this->beConstructedWith($manager->getWrappedObject());
 
         // Given
-        $info = new ImageInfo('dir', 'path', [$preset->getWrappedObject()]);
+        $info = new ImageInfo('dir', 'path');
 
         // when
-        $img = $this->process($info, $app->getWrappedObject());
+        $img = $this->process(
+            $info, 
+            [$rule->getWrappedObject()], 
+            $app->getWrappedObject()
+        );
 
         // then
         $img->shouldHaveType('Intervention\Image\Image');

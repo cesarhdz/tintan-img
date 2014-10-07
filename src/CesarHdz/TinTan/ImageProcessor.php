@@ -12,9 +12,7 @@ class ImageProcessor
 
     private $manager;
 
-	public function __construct(ImageManager $manager = null, $dir = null){
-		$presets = array();
-
+	public function __construct(ImageManager $manager = null){
         $this->manager = $manager ?: new ImageManager();
 	}
 
@@ -25,19 +23,18 @@ class ImageProcessor
      * @param  Application      $app [description]
      * @return [type]           [description]
      */
-    public function process(ImageInfo $info, Application $app)
+    public function process(ImageInfo $info, array $rules, Application $app)
     {
-        $presets = $info->getPresets();
         $img = $this->manager->make($info->getRealPath());
 
-        foreach ($presets as $preset){
-            $filter = $app->getFilter($preset->getFilterName());
+        foreach ($rules as $rule){
+            $filter = $app->getFilter($rule->getFilterName());
 
             if(!$filter){
-                throw new \Exception($preset->getFilterName() . 'Filter not found');
+                throw new \Exception($rule->getFilterName() . 'Filter not found');
             }
 
-            $img = $filter->filter($info, $img, $preset);
+            $img = $filter->filter($info, $img, $rule);
         }
 
         return $img;
