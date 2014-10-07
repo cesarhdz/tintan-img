@@ -24,22 +24,6 @@ class ImageResolverSpec extends ObjectBehavior
     	// expect
     	$this->resolve('some/image-path.jgp', [])
     		->shouldHaveType('CesarHdz\TinTan\ImageInfo');
-
     }
 
-    function it_should_resolve_an_image_with_presets_applied(FilterInterface $filter){
-        // given
-        $this->beConstructedWith('/img');
-    	$uri = 'tin-tan/image-path.thumbnail.jpg';
-
-    	$this->addPreset('thumbnail', 'size');
-
-    	// when
-    	$info = $this->resolve($uri);
-
-    	// then
-    	$info->getPresets()->shouldHaveCount(1);
-        $info->getUri()->shouldReturn('tin-tan/image-path.jpg');
-    	$info->getPathName()->shouldReturn('/img/tin-tan/image-path.jpg');
-    }
 }

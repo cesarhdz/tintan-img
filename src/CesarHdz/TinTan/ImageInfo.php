@@ -12,14 +12,9 @@ class ImageInfo extends \SplFileInfo
 
     protected $uri;
 
-	public function __construct($baseDir, $uri, array $presets = array()){
+	public function __construct($baseDir, $uri){
  		parent::__construct($baseDir . $uri);
- 		$this->presets = $presets;
         $this->uri = $uri;
-	}
-
-	public function getPresets(){
-		return $this->presets;
 	}
 
     public function isImage()

@@ -22,27 +22,8 @@ class ImageResolver
         return $this->dir;
     }
 
-    public function addPreset($name, $filter, array $args = []){
-        $this->presets[] = new Preset($name, $filter, $args);
-    }
-
-    public function getPresets(){
-        return $this->presets;
-    }
-
-    public function resolve($uri)
+    public function resolve($relativePath)
     {
-        $matches = [];
-
-        // Iterate overs presets to find the image path
-        foreach ($this->presets as $preset){
-            if($preset->match($uri)){
-                $uri = $preset->removeFrom($uri);
-                $matches[] = $preset;
-            }
-        }
-
-        return new ImageInfo($this->dir, $uri, $matches);
+        return new ImageInfo($this->dir, $relativePath);
     }
-
 }
