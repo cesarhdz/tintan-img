@@ -22,6 +22,7 @@ class ImageController implements ControllerProviderInterface
 			// If we don't have an image, a 404 status code is returned
 			if(! $imageInfo->isImage()){
 				$app->abort(404, 'Image ' . $route->getUri() . " doesn't exists");
+				return;
 			}
 
 			$image = $app['image_processor']->process($imageInfo, $rules, $app);

@@ -118,5 +118,7 @@ class Application extends Silex
     public function addRule($pattern, $filter, array $args = [])
     {
         $this['image_router']->addRule($pattern, $filter, $args);
+
+        return $this;
     }
 }
