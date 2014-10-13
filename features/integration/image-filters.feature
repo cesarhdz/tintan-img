@@ -30,6 +30,13 @@ Feature: Image Filters
     When I request "/img/tin-tan.300x300.jpg" uri
     Then I should get an image of "300" x "300" px
 
+  @now
+  Scenario: Multiple Filters
+    Given I register a "gray" rule using "grayscale" filter
+    When I request "/img/tin-tan.thumbnail.gray.png" uri
+    Then I should get an image of "250" x "250" px
+    And I should get a grayscale image
+
   @Pending
   Scenario Outline: Required rule
     Given I mark "thumbnail" rule as required for "tin-tan/" images
@@ -41,10 +48,3 @@ Feature: Image Filters
       | /tin-tan/hat.png     |
       | /tin-tan/hat.jpg     |
 
-
-  @Pending
-  Scenario: Multiple Filters
-    Given I register a "grayscale" rule using "Grayscale" filter and "gray" pattern
-    When I request "tin-tan/hat.thumbnail.watermark.png" uri
-    Then I should get an image of "250" x "250" px
-    And I should get an image with the text "Copyright Notice"
